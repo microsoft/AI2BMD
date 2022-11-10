@@ -1,0 +1,66 @@
+# training settings
+num_epochs: 600
+lr_scheduler: plateau
+lr_cosine_length: null
+lr_warmup_steps: 20000
+lr: 2.e-5
+lr_patience: 15
+lr_min: 1.e-09
+lr_factor: 0.8
+weight_decay: 0.0
+early_stopping_patience: 150
+loss_type: MSE
+
+# dataset specific
+dataset: QM9
+dataset_arg: energy_U0
+dataset_root: ./data/QM9
+max_nodes: null 
+mean: null
+std: null
+
+# dataloader specific
+reload: 1
+batch_size: 32
+inference_batch_size: 64
+standardize: false
+splits: null
+split_mode: null
+train_size: 110000
+val_size: 10000
+test_size: null
+num_workers: 6
+
+# model architecture specific
+prior_model: Atomref
+
+# architectural specific
+max_z: 100
+embedding_dim: 512
+ffn_embedding_dim: 2048
+num_layers: 12
+num_heads: 32
+cutoff: 5.0
+num_rbf: 64
+trainable_rbf: false
+norm_type: none
+dropout: 0.0
+attention_dropout: 0.0
+activation_dropout: 0.0
+activation_function: silu
+decoder_type: scalar
+aggr: sum
+num_classes: 1
+pad_token_id: 0
+
+# other specific
+distributed_backend: ddp
+ndevices: 1
+num_nodes: 1
+precision: 32
+log_dir: ./logs
+task: train
+seed: 1
+redirect: false
+accelerator: gpu
+save_interval: 1
