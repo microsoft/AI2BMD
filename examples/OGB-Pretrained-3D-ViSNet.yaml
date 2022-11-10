@@ -1,0 +1,69 @@
+load_model: null
+
+# training settings
+model_choice: Pretrained_3D_ViSNet
+is_submit: false
+lr: 0.0001
+weight_decay: 0.0
+num_epochs: 3000
+lr_patience: 15
+lr_min: 1.0e-07
+lr_factor: 0.8
+lr_warmup_steps: 6000
+loss_e_weight: 10.
+loss_h_weight: 1.
+tau: 0.07
+loss_type: l1
+early_stopping_patience: 150
+
+# dataset specific
+dataset_root: ./ogb2022-dataset/Pretrained_3D_ViSNet_dataset
+atom_feature: ["atomic_num", "formal_charge", "degree", "chiral_tag", "total_numHs", "is_aromatic", "hybridization"]
+bond_feature: []
+distance_otf: true
+max_num_neighbors: 32
+
+# dataloader specific
+reload: 1
+standardize: false # pre-compute
+batch_size: 64 # 16 V100 GPUs
+inference_batch_size: 256
+num_workers: 16
+update_freq: 1
+
+# architectural args
+dropout: 0.1
+model: ViSNetBlock
+output_model: ScalarKD
+embedding_dimension: 256
+num_layers: 9
+num_rbf: 64
+activation: silu
+rbf_type: expnorm
+trainable_rbf: false
+neighbor_embedding: true
+lmax: 1
+vecnorm_type: max_min
+vecnorm_trainable: false
+distance_influence: both
+attn_activation: silu
+num_heads: 32
+aggr: add
+cutoff_lower: 0.0
+cutoff_upper: 5.0
+reduce_op: add
+pretrain: true
+load_teacher_model: checkpoints/Pretrained_3D_ViSNet_ckpt/pretrained_visnet.ckpt
+
+# other args
+ngpus: -1
+num_nodes: 1
+precision: 32
+log_dir: ./logs/Pretrained-3D-ViSNet/
+save_interval: 1
+seed: 1
+distributed_backend: ddp
+accelerator: gpu
+redirect: false
+task: train
+inference_dataset: valid

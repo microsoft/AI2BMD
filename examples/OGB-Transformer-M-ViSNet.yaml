@@ -1,0 +1,65 @@
+load_model: null
+
+# training settings
+model_choice: Transformer_M_ViSNet
+is_submit: false
+lr: 2.e-4
+weight_decay: 0.0
+total_num_updates: 1500000
+warmup_updates: 150000
+adam_beta1: 0.9
+adam_beta2: 0.999
+adam_eps: 1.e-8
+end_learning_rate: 1.e-9
+power: 1
+clip_norm: 5.0
+
+# dataset specific
+dataset_root: ./ogb2022-dataset/Transformer_M_ViSNet_dataset/
+AddHs: false
+
+# dataloader specific
+reload: 1
+standardize: false # pre-compute
+batch_size: 256 # 4 A100 GPUs
+inference_batch_size: 256
+num_workers: 16
+update_freq: 1
+
+# architectural args
+dropout: 0.0
+num_atoms: 512
+num_in_degree: 512
+num_out_degree: 512
+num_edges: 512
+num_spatial: 512
+num_edge_dis: 128
+multi_hop_max_dist: 5
+encoder_layers: 12
+encoder_embed_dim: 768
+encoder_ffn_embed_dim: 768
+encoder_attention_heads: 32
+attention_dropout: 0.1
+act_dropout: 0.1
+sandwich_ln: false
+droppath_prob: 0.1
+add_3d: true
+num_3d_bias_kernel: 128
+no_2d: false
+noise_scale: 0.2
+mode_prob: 0.2,0.2,0.6
+version: v2
+
+# other args
+ngpus: -1
+num_nodes: 1
+precision: 16
+amp_backend: native
+log_dir: ./logs/Transformer-M-ViSNet/
+save_interval: 1
+seed: 1
+distributed_backend: ddp
+accelerator: gpu
+redirect: false
+task: train
+inference_dataset: valid
