@@ -9,6 +9,7 @@
 ## News
 
 ### Nov 2022
+- *ViSNet Team* won the 2nd place in the [OGB-LSC @ NeurIPS 2022 PCQM4Mv2 Track](https://ogb.stanford.edu/neurips2022/results/)! Please check out the branch [OGB-LSC@NIPS2022](https://github.com/microsoft/ViSNet/tree/OGB-LSC%40NIPS2022) and give it a star if you find it useful!
 - The paper of ViSNet is under-review. We will release the codebase until it is accepted.
 
 ## Citation
