@@ -1,0 +1,70 @@
+load_model: null
+
+# training settings
+num_epochs: 1000
+lr_warmup_steps: 3000
+lr: 0.0002
+lr_patience: 10
+lr_min: 1.e-07
+lr_factor: 0.8
+weight_decay: 0.0
+early_stopping_patience: 100
+loss_type: MSE
+loss_scale_y: 0.05
+loss_scale_dy: 1.0
+energy_weight: 0.05
+force_weight: 0.95
+
+# dataset specific
+dataset: Chignolin
+dataset_arg: null
+dataset_root: ./chignolin_data
+derivative: true
+split_mode: null
+
+# dataloader specific
+reload: 1
+batch_size: 4
+inference_batch_size: 4
+standardize: true
+splits: null
+train_size: 0.8
+val_size: 0.1
+test_size: null
+num_workers: 12
+
+# model architecture specific
+model: ViSNetBlock
+output_model: Scalar
+prior_model: null
+
+# architectural specific
+embedding_dimension: 128
+num_layers: 6
+num_rbf: 32
+activation: silu
+rbf_type: expnorm
+trainable_rbf: false
+attn_activation: silu
+num_heads: 8
+cutoff: 5.0
+max_z: 100
+max_num_neighbors: 32
+reduce_op: add
+lmax: 1
+vecnorm_type: none
+trainable_vecnorm: false
+vertex_type: None
+
+# other specific
+ngpus: -1
+num_nodes: 1
+precision: 32
+log_dir: /path/to/logs
+task: train
+seed: 1
+distributed_backend: ddp
+redirect: false
+accelerator: gpu
+test_interval: 100
+save_interval: 1
