@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"
         crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.datatables.net/v/se/dt-1.10.18/b-1.5.6/b-colvis-1.5.6/datatables.min.css"/>
-  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/AI2BMD/static/css/main.css">
   <link rel="shortcut icon" href="https://em-content.zobj.net/thumbs/120/microsoft/319/dna_1f9ec.png">
 </head>
 
@@ -18,10 +18,9 @@
 <div id="app" v-cloak>
   <div class="ui fixed inverted menu" id="topbar">
     <div class="ui container">
-      <a href="/" class="header item"><i class="big yellow dna icon"></i>
+      <a href="/AI2BMD/" class="header item"><i class="big yellow dna icon"></i>
         MD-MLFF Server Demo
       </a>
-      <a class="item" href="/submit">Submit Job</a>
       <a class="right header item" href="#">Microsoft Research AI4Science</a>
     </div>
   </div>
@@ -49,12 +48,12 @@
           <transition mode="out-in">
           <figure>
           <picture>
-            <img src="/static/img/protein_energy.png" v-if="this.protein === null" class="ui left image" alt="energy" style="width: 80%; height: 80%">
-            <img src="/static/img/1_chig_c9_energy_1ns.png" v-if="this.protein === 'chignolin'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
-            <img src="/static/img/trpcage_e.png" v-if="this.protein === 'trpcage'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
-            <img src="/static/img/ww_e.png" v-if="this.protein === 'ww'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
-            <img src="/static/img/pacsin3_e.png" v-if="this.protein === 'pacsin3'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
-            <img src="/static/img/1xdo_e.png" v-if="this.protein === '1xdo'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/protein_energy.png" v-if="this.protein === null" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/1_chig_c9_energy_1ns.png" v-if="this.protein === 'chignolin'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/trpcage_e.png" v-if="this.protein === 'trpcage'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/ww_e.png" v-if="this.protein === 'ww'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/pacsin3_e.png" v-if="this.protein === 'pacsin3'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/1xdo_e.png" v-if="this.protein === '1xdo'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
           </picture>
           </figure>
           </transition>
@@ -63,12 +62,12 @@
           <transition mode="out-in">
           <figure>
           <picture>
-            <img src="/static/img/protein_forces.png" v-if="this.protein === null" class="ui left image" alt="force" style="width: 80%; height: 80%">
-            <img src="/static/img/1_chig_c9_forces_1ns.png" v-if="this.protein === 'chignolin'" class="ui left image" alt="force" style="width: 80%; height: 80%">
-            <img src="/static/img/trpcage_f.png" v-if="this.protein === 'trpcage'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
-            <img src="/static/img/ww_f.png" v-if="this.protein === 'ww'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
-            <img src="/static/img/pacsin3_f.png" v-if="this.protein === 'pacsin3'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
-            <img src="/static/img/1xdo_f.png" v-if="this.protein === '1xdo'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/protein_forces.png" v-if="this.protein === null" class="ui left image" alt="force" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/1_chig_c9_forces_1ns.png" v-if="this.protein === 'chignolin'" class="ui left image" alt="force" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/trpcage_f.png" v-if="this.protein === 'trpcage'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/ww_f.png" v-if="this.protein === 'ww'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/pacsin3_f.png" v-if="this.protein === 'pacsin3'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="/AI2BMD/static/img/1xdo_f.png" v-if="this.protein === '1xdo'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
           </picture>
           </figure>
           </transition>
@@ -129,12 +128,12 @@
         this.protein = protein;
         this.nglStage.removeAllComponents();
         this.loading = true;
-        this.nglStage.loadFile('/static/traj/' + protein + '.pdb').then(comp => {
+        this.nglStage.loadFile('/AI2BMD/static/traj/' + protein + '.pdb').then(comp => {
           this.comp = comp.setSelection('not water');
           repr = this.comp.addRepresentation('ball+stick', {metalness: 0.3});
           repr.setSelection('not water');
           this.comp.autoView(500);
-          NGL.autoLoad('/static/traj/' + protein + '.xtc').then(traj => {
+          NGL.autoLoad('/AI2BMD/static/traj/' + protein + '.xtc').then(traj => {
             console.log('Trajectory loaded')
             this.loading = false;
             this.traj = this.comp.addTrajectory(traj, {sele: 'not water'});
