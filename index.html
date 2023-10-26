@@ -21,7 +21,6 @@
     }
     h1 {
       font-size: 40px;
-      margin-top: 100px;
       overflow-x: visible;
     }
     h2 {
@@ -35,7 +34,10 @@
 </head>
 
 <body>
-<div id="app" style="margin-left: 20%; margin-right: 20%; margin-top: 50px">
+<div style="width: 20%; margin-top: 50px; display: inline-block; vertical-align: top">
+  <img src="static/img/logo.png" alt="logo" style="max-width: 100%">
+</div>
+<div id="app" style="width: 60%; margin-top: 50px; display: inline-block; vertical-align: top">
   <div class="ui fixed inverted menu" id="topbar">
     <div class="ui container">
       <a href="#" class="header item"><img src="static/img/favicon.png" alt="favicon">
@@ -90,20 +92,18 @@
     </li>
     <li>
       AI-powered MD excels in deducing conformational space exploration and protein dynamics, exhibiting its competency to bridge the discrepancy between simulations and experiments.
-      <div class="col">
+      <div class="col" style="display: flex">
       <div class="row">
-        <figure>
-          <picture>
-            <img src="static/img/1_chig_c9_800ps.gif" class="ui centered image" alt="unfold to fold" width=60% loading="lazy">
-          </picture>
-        </figure>
+        <video width="320" height="240" loop autoplay muted>
+          <source src="static/vid/unfold_to_fold.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
       <div class="row">
-        <figure>
-          <picture>
-            <img src="static/img/1xdo.gif" class="ui centered image" alt="1xdo" width=60% loading="lazy">
-          </picture>
-        </figure>
+        <video width="320" height="400" loop autoplay muted>
+          <source src="static/vid/1xdo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
       </div>
     </li>
@@ -111,7 +111,7 @@
 
   <div class="btn-group" style="margin-top: 50px">
     <a class="ui icon top center pointing blue button" href="trajectory.html">Explore trajectories</a>
-    <a class="ui icon top center pointing orange button" href="https://www.microsoft.com/en-us/research/publication/ai2bmd-efficient-characterization-of-protein-dynamics-with-ab-initio-accuracy/">Find related articles</a>
+    <a class="ui icon top center pointing orange button" href="articles.html">Find related articles</a>
   </div>
   <div style="height: 50px"></div>
 
