@@ -64,8 +64,8 @@ CUDA_VISIBLE_DEVICES=0 python train.py --conf examples/ViSNet-QM9.yml --dataset-
 
 ## Contact
 
-Please contact Tong Wang (watong@microsoft.com) for technical support.
+Please contact Dr. Tong Wang (watong@microsoft.com) for technical support.
 
 ## License
 
-This project is licensed under the terms of the MIT license. See [LICENSE](https://github.com/microsoft/ViSNet/blob/main/LICENSE) for additional details.
+This project is licensed under the terms of the MIT license. 
