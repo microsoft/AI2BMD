@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Trajectory Explorer</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/se/dt-1.10.18/b-1.5.6/b-colvis-1.5.6/datatables.min.css"/>
+  <link rel="stylesheet" href="static/css/main.css">
+  <link rel="shortcut icon" href="static/img/favicon.png">
+</head>
+
+<body>
+<div id="app" v-cloak>
+  <div class="ui fixed inverted menu" id="topbar">
+    <div class="ui container">
+      <a href="index.html" class="header item"><img src="static/img/favicon.png" alt="favicon">
+        AI-powered Molecular Dynamics Simulation
+      </a>
+      <a class="right header item" href="/">Microsoft Research AI4Science</a>
+    </div>
+  </div>
+
+  <div class="ui main container">
+    <i class="dropdown icon"></i>
+    <div class="ui centered grid">
+      <div class="ui eight wide column">
+        <h2 class="ui header">
+          <i class="desktop icon"></i>
+          Trajectory Explorer
+        </h2>
+        <div class="ui selection dropdown">
+          <input type="hidden" name="protein" @change="e => updateTraj(e.target.value)">
+          <div class="default text">Protein</div>
+          <div class="menu">
+            <div class="item" data-value="chignolin">Chignolin</div>
+            <div class="item" data-value="trpcage">Trpcage</div>
+            <div class="item" data-value="ww">WW domain</div>
+            <div class="item" data-value="pacsin3">PACSIN 3</div>
+            <div class="item" data-value="1xdo">Polyphosphate Kinase A</div>
+          </div>
+        </div>
+        <div class="row">
+          <transition mode="out-in">
+          <figure>
+          <picture>
+            <img src="static/img/protein_energy.png" v-if="this.protein === null" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="static/img/1_chig_c9_energy_1ns.png" v-if="this.protein === 'chignolin'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="static/img/trpcage_e.png" v-if="this.protein === 'trpcage'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="static/img/ww_e.png" v-if="this.protein === 'ww'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="static/img/pacsin3_e.png" v-if="this.protein === 'pacsin3'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="static/img/1xdo_e.png" v-if="this.protein === '1xdo'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+          </picture>
+          </figure>
+          </transition>
+        </div>
+        <div class="row">
+          <transition mode="out-in">
+          <figure>
+          <picture>
+            <img src="static/img/protein_forces.png" v-if="this.protein === null" class="ui left image" alt="force" style="width: 80%; height: 80%">
+            <img src="static/img/1_chig_c9_forces_1ns.png" v-if="this.protein === 'chignolin'" class="ui left image" alt="force" style="width: 80%; height: 80%">
+            <img src="static/img/trpcage_f.png" v-if="this.protein === 'trpcage'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="static/img/ww_f.png" v-if="this.protein === 'ww'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="static/img/pacsin3_f.png" v-if="this.protein === 'pacsin3'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+            <img src="static/img/1xdo_f.png" v-if="this.protein === '1xdo'" class="ui left image" alt="energy" style="width: 80%; height: 80%">
+          </picture>
+          </figure>
+          </transition>
+        </div>
+        <div class="row" v-if="this.protein === '1xdo'" style="width: 60%; margin-left: 50px">
+          The ground truth is determined using Frag-QM, as the protein size is too large to be accessed directly.
+        </div>
+      </div>
+
+      <div class="ui eight wide column">
+        <h2 class="ui header">
+          <i class="camera icon"></i>
+          <div class="content">
+            Viewer
+            <div class="sub header"></div>
+          </div>
+        </h2>
+        <div id="nglwrapper" style="height: 500px; width: 100%;"></div>
+        <div id="runinfo" v-if="this.loading" style="text-align: center; font-size: 20px; margin-top: 3px">Loading trajectory ...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/v/se/dt-1.10.18/b-1.5.6/b-colvis-1.5.6/datatables.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ngl/2.1.1/ngl.js"></script>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data() {
+      return {
+        nglStage: null,
+        comp: null,
+        traj: null,
+        player: null,
+        protein: null,
+        loading: false,
+      }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        this.nglStage = new NGL.Stage('nglwrapper');
+        // this.nglStage.setParameters({backgroundColor: 'white'});
+      });
+    },
+    methods: {
+      updateTraj(protein) {
+        console.log(protein)
+        this.protein = protein;
+        this.nglStage.removeAllComponents();
+        this.loading = true;
+        this.nglStage.loadFile('static/traj/' + protein + '.pdb').then(comp => {
+          this.comp = comp.setSelection('not water');
+          repr = this.comp.addRepresentation('ball+stick', {metalness: 0.3});
+          repr.setSelection('not water');
+          this.comp.autoView(500);
+          NGL.autoLoad('static/traj/' + protein + '.xtc').then(traj => {
+            console.log('Trajectory loaded')
+            this.loading = false;
+            this.traj = this.comp.addTrajectory(traj, {sele: 'not water'});
+            this.traj.setFrame(1);
+            this.player = new NGL.TrajectoryPlayer(
+              this.traj.trajectory, {step: 1, timeout: 20, interpolateType: ''}
+            );
+            this.player.play();
+            this.comp.autoView(500);
+          })
+        });
+      },
+    },
+  });
+  $(document).ready(function () {
+    $('.ui.dropdown').dropdown();
+  });
+</script>
+
+</body>
+
+</html>

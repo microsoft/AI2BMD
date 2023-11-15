@@ -1,0 +1,11 @@
+.ui.main.container {
+    padding-top: 7em;
+    padding-left: 7em!important;
+    padding-right: 7em!important;
+    padding-bottom: 7em;
+    width: auto;
+}
+
+[v-cloak] {
+    display: None;
+}
