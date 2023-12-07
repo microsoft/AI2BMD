@@ -1,0 +1,66 @@
+# training settings
+num_epochs: 300
+lr_scheduler: plateau
+lr_cosine_length: null
+lr_warmup_steps: 10000
+lr: 2.e-4
+lr_patience: 5
+lr_min: 1.e-07
+lr_factor: 0.8
+weight_decay: 0.0
+early_stopping_patience: 30
+loss_type: MAE
+
+# dataset specific
+dataset: Molecule3D
+dataset_arg: null
+dataset_root: ./data/Molecule3D
+max_nodes: null 
+mean: 5.8339 # 5.6260
+std: 1.1805 # 1.2037
+
+# dataloader specific
+reload: 1
+batch_size: 8
+inference_batch_size: 8
+standardize: true
+splits: null
+split_mode: random
+train_size: null
+val_size: null
+test_size: null
+num_workers: 6
+
+# model architecture specific
+prior_model: null
+
+# architectural specific
+max_z: 100
+embedding_dim: 256
+ffn_embedding_dim: 1024
+num_layers: 9
+num_heads: 8
+cutoff: 5.0
+num_rbf: 32
+trainable_rbf: false
+norm_type: max_min
+dropout: 0.0
+attention_dropout: 0.0
+activation_dropout: 0.0
+activation_function: silu
+decoder_type: scalar
+aggr: mean
+num_classes: 1
+pad_token_id: 0
+
+# other specific
+distributed_backend: ddp
+ndevices: 16
+num_nodes: 1
+precision: 32
+log_dir: ./logs
+task: train
+seed: 1
+redirect: false
+accelerator: gpu
+save_interval: 1

@@ -1,33 +1,54 @@
-# Project
+# Geometric Transformer with Interatomic Positional Encoding
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+<img src="ipe.png" width=100%> 
 
-As the maintainer of this project, please make a few updates:
+## Environments
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+- Install the dependencies
 
-## Contributing
+```shell
+conda create -y -n geoformer python=3.9
+conda activate geoformer
+conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
+conda install pyg==2.4.0 -c pyg
+conda install transformers ogb ase
+pip install pytorch_lightning==1.8.0
+pip install rdkit==2023.09.01
+pip install einops
+```
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+## Getting started
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+To train Geoformer on QM9, just run:
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+```shell
+CUDA_VISIBLE_DEVICES=0 python train.py --conf examples/Geoformer-QM9.yml --dataset-arg energy_U0 --dataset-root /path/to/data --log-dir /path/to/log
+```
 
-## Trademarks
+One can modify the ```dataset-arg``` to train another property like energy_U.
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+To train Geoformer on Molecule3D, just run:
+
+```shell
+python train.py --conf examples/Geoformer-Molecule3D.yml --split-mode random --dataset-root /path/to/data --log-dir /path/to/log
+```
+
+One can modify the ```split-mode``` to train on another split strategy.
+
+## Inference
+
+Once Geoformer is trained, to use a pretrained checkpoint for inference, simply run:
+
+```shell
+CUDA_VISIBLE_DEVICES=0 python train.py --conf examples/Geoformer-QM9.yml --dataset-arg energy_U0 --dataset-root /path/to/data --log-dir /path/to/log --load-model /path/to/ckpt --task inference
+```
+
+We provide [pretrained checkpoints](./examples/energy_U0.ckpt) on the energy_U0 property to reproduce the results in our paper.
+
+## Contact
+
+Please contact Tong Wang (watong@microsoft.com) for technical support.
+
+## License
+
+This project is licensed under the terms of the MIT license. See [LICENSE](https://github.com/microsoft/ViSNet/blob/main/LICENSE) for additional details.
