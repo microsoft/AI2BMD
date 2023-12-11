@@ -1,4 +1,10 @@
 # Geometric Transformer with Interatomic Positional Encoding
+## Overview
+Authors: Yusong Wang#, Shaoning Li#, Tong Wang*, Bin Shao, Nanning Zheng and Tie-Yan Liu
+
+(#Equal contribution, *Corresponding authors: watong@microsoft.com (T. W.))
+
+Article: https://neurips.cc/virtual/2023/poster/72577
 
 <img src="ipe.png" width=100%> 
 
