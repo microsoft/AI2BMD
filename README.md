@@ -26,13 +26,29 @@ The whole comformation MD dataset for proteins calculated at Density Functional 
 
 ### ViSNet
 
-ViSNet (shorted for “**V**ector-**S**calar **i**nteractive graph neural **Net**work”) is an equivariant geometry-enhanced graph neural for molecules that significantly alleviate the dilemma between computational costs and sufficient utilization of geometric information. ViSNet has won the Championship in [The First Global AI Drug Development Competition](https://aistudio.baidu.com/competition/detail/1012/0/leaderboard) and one of the winners in [OGB-LSC @ NeurIPS 2022 PCQM4Mv2 Track](https://ogb.stanford.edu/neurips2022/results/)! 
+ViSNet (shorted for “**V**ector-**S**calar **i**nteractive graph neural **Net**work”) is an equivariant geometry-enhanced graph neural for molecules that significantly alleviate the dilemma between computational costs and sufficient utilization of geometric information.
 
 <img src="img/visnet_arch.png" width=50%> 
 
+- ViSNet is published on *Nature Communications* [Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing](https://www.nature.com/articles/s41467-023-43720-2)
+
+- ViSNet is selected as "Editors' Highlights" for both ["**AI and machine learning**"](https://www.nature.com/collections/ceiajcdbeb) and ["**Biotechnology and methods**"](https://www.nature.com/collections/idhhgedgig) fields of Nature Communications.
+
+<img src="img/ai-eh.png" width=50%>
+<img src="img/bio-eh.png" width=50%> 
+
+- ViSNet has won the Championship in [The First Global AI Drug Development Competition](https://aistudio.baidu.com/competition/detail/1012/0/leaderboard) and one of the winners in [OGB-LSC @ NeurIPS 2022 PCQM4Mv2 Track](https://ogb.stanford.edu/neurips2022/results/)! 
+
 - Please check out the branch [ViSNet](https://github.com/microsoft/AI2BMD/tree/ViSNet) for the source code, instruction on model training and more techniqucal details.
   
-- Read the preprint version article [ViSNet: an equivariant geometry-enhanced graph neural network with vector-scalar interactive message passing for molecules](https://arxiv.org/abs/2210.16518).  
+### Geoformer
+Geoformer (short for "**Geo**metric Trans**former**") is a novel geometric Transformer to effectively model molecular structures for various molecular property prediction. Geoformer introduces a novel positional encoding method, i.e., Interatomic Positional Encoding (IPE) to parameterize atomic environments in Transformer. By incorporating IPE, Geoformer models valuable geometric information beyond pairwise distances for Transformer-based architecture. Geoformer can be recognized as a Transformer variant of ViSNet.
+
+- Geoformer is published on 37th Conference on Neural Information Processing Systems (NeurIPS 2023).
+- Read the paper of Geoformer [Geometric Transformer with Interatomic Positional Encoding](https://github.com/microsoft/AI2BMD/tree/Geoformer/Geoformer.pdf).
+- Please check out the branch [Geoformer](https://github.com/microsoft/AI2BMD/tree/Geoformer) for the source code, instruction on model training and more techniqucal details.
+
+<img src="img/geoformer.png" width=50%>
 
 ## Simulation evaluation and analysis
 
