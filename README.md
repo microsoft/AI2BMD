@@ -68,15 +68,6 @@ Markov state models (MSMs) play a key role in studying protein conformational dy
 
 - Find an application case in studying the Spike-ACE2 complex structure for the highly infectious mechanism of Omicron: [Structural insights into the SARS-CoV-2 Omicron RBD-ACE2 interaction](https://www.nature.com/articles/s41422-022-00644-8).  
 
-## License
-
-Copyright (c) Microsoft Corporation. All rights reserved.
-
-Licensed under the [MIT](LICENSE.md) license.
-
-## Disclaimer
-
-AI<sup>2</sup>BMD is a research project. It is not an officially supported Microsoft product.
 
 ## References
 
@@ -89,6 +80,16 @@ Yusong Wang#, Shaoning Li#, [Tong Wang*](https://www.microsoft.com/en-us/researc
 [Tong Wang#*](https://www.microsoft.com/en-us/research/people/watong/), Xinheng He#, Mingyu Li#, [Bin Shao*](https://www.binshao.info/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/). AIMD-Chig: Exploring the conformational space of a 166-atom protein Chignolin with ab initio molecular dynamics, Scientific Data 10, 549 (2023).
 
 Shiqi Gong#, Xinheng He#, Qi Meng, Zhiming Ma, [Bin Shao*](https://www.binshao.info/), [Tong Wang*](https://www.microsoft.com/en-us/research/people/watong/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/). Stochastic Lag Time Parameterization for Markov State Models of Protein Dynamics, The Journal of Physical Chemistry B 2022 126 (46), Cover Story, 2022.
+
+## License
+
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Licensed under the [MIT](LICENSE.md) license.
+
+## Disclaimer
+
+AI<sup>2</sup>BMD is a research project. It is not an officially supported Microsoft product.
 
 ## Hiring
 
