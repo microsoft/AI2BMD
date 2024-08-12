@@ -2,11 +2,9 @@
 
 ## Overview
 
-The AI-powered MD is a generalizable solution to efficiently simulate various proteins with *ab initio* accuracy by machine learning force field. This project consists of our studies on **Datasets**, **Modeling**, **Simulation evaluation and analysis**, which are demonstrated below and in different branches. See [The Homepage of AI<sup>2</sup>BMD](https://microsoft.github.io/AI2BMD/index.html) and find the preprint version article [AI<sup>2</sup>BMD: efficient characterization of protein dynamics with ab initio accuracy](https://www.biorxiv.org/content/10.1101/2023.07.12.548519v1.abstract) for more details.
+AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains **Datasets**, **Modeling**, **Simulation evaluation and analysis**, which are demonstrated below and in different branches. See [The Homepage of AI<sup>2</sup>BMD](https://microsoft.github.io/AI2BMD/index.html) and find the preprint version article [AI<sup>2</sup>BMD: efficient characterization of protein dynamics with ab initio accuracy](https://www.biorxiv.org/content/10.1101/2023.07.12.548519v1.abstract) for more details.
 
 <img src="img/ai2bmd_logo.png" width=30%> 
-
-*Hiring*: We are hiring research interns, engineering interns and full time employees on MD simulation, quantum chemistry, AIDD, geometry deep learning (GDL), molecular graph neural network, system design and CUDA acceleration. Please send your resume to watong@microsoft.com .
 
 ## Datasets
 
@@ -70,10 +68,28 @@ Markov state models (MSMs) play a key role in studying protein conformational dy
 
 - Find an application case in studying the Spike-ACE2 complex structure for the highly infectious mechanism of Omicron: [Structural insights into the SARS-CoV-2 Omicron RBD-ACE2 interaction](https://www.nature.com/articles/s41422-022-00644-8).  
 
-## Contact
-
-Please contact Dr. Tong Wang (watong@microsoft.com) if you have interests in our study.
-
 ## License
 
-This project is licensed under the terms of the MIT license. 
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Licensed under the [MIT](LICENSE.md) license.
+
+## Disclaimer
+
+AI<sup>2</sup>BMD is a research project. It is not an officially supported Microsoft product.
+
+## References
+
+Yusong Wang, [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/), Shaoning Li, Xinheng He, Mingyu Li, [Zun Wang](https://www.microsoft.com/en-us/research/people/zunwang/), Nanning Zheng, [Bin Shao](https://www.binshao.info/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/), Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing, Nature Communications, January 2024.
+
+Yusong Wang, Shaoning Li, [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/), [Bin Shao](https://www.binshao.info/), Nanning Zheng, [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/). Geometric Transformer with Interatomic Positional Encoding. NeurIPS 2023.
+
+[Zun Wang](https://www.microsoft.com/en-us/research/people/zunwang/), Hongfei Wu, [Lixin Sun](https://www.microsoft.com/en-us/research/people/lixinsun/), Xinheng He, Zhirong Liu, [Bin Shao](https://www.binshao.info/), [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/). Improving machine learning force fields for molecular dynamics simulations with fine-grained force metrics, The Journal of Chemical Physics, Volume 159, Issue 3, Cover Story, July 2023.
+
+[Tong Wang](https://www.microsoft.com/en-us/research/people/watong/), Xinheng He, Mingyu Li, [Bin Shao](https://www.binshao.info/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/). AIMD-Chig: Exploring the conformational space of a 166-atom protein Chignolin with ab initio molecular dynamics, Scientific Data 10, 549 (2023).
+
+Shiqi Gong, Xinheng He, Qi Meng, Zhiming Ma, [Bin Shao](https://www.binshao.info/), [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/). Stochastic Lag Time Parameterization for Markov State Models of Protein Dynamics, The Journal of Physical Chemistry B 2022 126 (46), Cover Story, 2022.
+
+## Hiring
+
+We are hiring research and engineering interns. Please contact [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/) for more information.
