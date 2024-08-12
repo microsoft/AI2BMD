@@ -2,7 +2,7 @@
 
 ## Overview
 
-AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains **Datasets**, **Modeling**, **Simulation evaluation and analysis**, which are demonstrated below and in different branches. See [The Homepage of AI<sup>2</sup>BMD](https://microsoft.github.io/AI2BMD/index.html) and find the preprint version article [AI<sup>2</sup>BMD: efficient characterization of protein dynamics with ab initio accuracy](https://www.biorxiv.org/content/10.1101/2023.07.12.548519v1.abstract) for more details.
+AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains datasets, model architectures, simulation programs, and papers related to AI<sup>2</sup>BMD.
 
 <img src="img/ai2bmd_logo.png" width=30%> 
 
@@ -20,7 +20,7 @@ The whole comformation MD dataset for proteins calculated at Density Functional 
 
 - Get the dataset [AIMD-Chig](https://figshare.com/articles/dataset/_strong_AIMD-Chig_exploring_the_conformational_space_of_166-atom_protein_strong_em_strong_Chignolin_strong_em_strong_with_strong_em_strong_ab_initio_strong_em_strong_molecular_dynamics_strong_/22786730).
 
-## Modeling
+## Model Architectures
 
 ### ViSNet
 
@@ -48,7 +48,7 @@ Geoformer (short for "**Geo**metric Trans**former**") is a novel geometric Trans
 
 <img src="img/geoformer.png" width=50%>
 
-## Simulation evaluation and analysis
+## Evaluation and Analysis
 
 ### Fine-grained force metrics for MLFF
 
