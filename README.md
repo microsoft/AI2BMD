@@ -1,5 +1,17 @@
 # AI<sup>2</sup>BMD: AI-powered *ab initio* biomolecular dynamics simulation
 
+## Contents
+
+- [Overview](#overview)
+- [Datasets](#datasets)
+- [System Requirements](#system-requirements)
+- [Installation Guide](#installation-guide)
+- [Demo](#demo)
+- [Model Architectures](#model-architectures)
+- [Related Research](#ai2bmd-related-research)
+- [Citation](#citation)
+- [License](#license)
+
 ## Overview
 
 AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains datasets, model architectures, simulation programs, and papers related to AI<sup>2</sup>BMD.
@@ -19,6 +31,42 @@ The whole comformation MD dataset for proteins calculated at Density Functional 
 - Find the story [The first whole conformational molecular dynamics dataset for proteins at ab initio accuracy and the novel computational technologies behind it](https://bioengineeringcommunity.nature.com/posts/aimd-chig-exploring-the-conformational-space-of-proteins-at-dft-level).
 
 - Get the dataset [AIMD-Chig](https://figshare.com/articles/dataset/_strong_AIMD-Chig_exploring_the_conformational_space_of_166-atom_protein_strong_em_strong_Chignolin_strong_em_strong_with_strong_em_strong_ab_initio_strong_em_strong_molecular_dynamics_strong_/22786730).
+
+### System Requirements
+
+## Hardware Requirements
+
+We recommend a machine with the following specs:
+
+- **CPU**: 8+ cores
+- **Memory**: 32+ GB
+- **GPU**: CUDA-enabled GPU with 8+ GB memory
+
+## Software Requirements
+
+The package has been tested on the following systems:
+
+- **OS**: Ubuntu 20.04
+- **Python**: 3.9
+- **CUDA**: 11.3
+- **cuDNN**: 8
+
+## Installation Guide
+
+### Step 1: Clone the repository
+```bash
+git clone https://github.com/microsoft/AI2BMD
+cd AI2BMD
+```
+
+### Step 2: Download the docker image
+```bash
+docker pull microsoft/ai2bmd:latest
+```
+
+## Demo
+
+Coming soon
 
 ## Model Architectures
 
@@ -48,7 +96,7 @@ Geoformer (short for "**Geo**metric Trans**former**") is a novel geometric Trans
 
 <img src="img/geoformer.png" width=50%>
 
-## Evaluation and Analysis
+##  AI<sup>2</sup>BMD Related Research
 
 ### Fine-grained force metrics for MLFF
 
@@ -69,9 +117,9 @@ Markov state models (MSMs) play a key role in studying protein conformational dy
 - Find an application case in studying the Spike-ACE2 complex structure for the highly infectious mechanism of Omicron: [Structural insights into the SARS-CoV-2 Omicron RBD-ACE2 interaction](https://www.nature.com/articles/s41422-022-00644-8).  
 
 
-## References
+## Citation
 
-Yusong Wang#, [Tong Wang#*](https://www.microsoft.com/en-us/research/people/watong/), Shaoning Li#, Xinheng He, Mingyu Li, [Zun Wang](https://www.microsoft.com/en-us/research/people/zunwang/), Nanning Zheng, [Bin Shao*](https://www.binshao.info/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/), Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing, Nature Communications, 15.1 (2024): 313.
+Yusong Wang#, [Tong Wang#*](https://www.microsoft.com/en-us/research/people/watong/), Shaoning Li#, Xinheng He, Mingyu Li, [Zun Wang](https://www.microsoft.com/en-us/research/people/zunwang/), Nanning Zheng, [Bin Shao*](https://www.binshao.info/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/), Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing, Nature Communications, 15.1 (2024): 313. 
 
 Yusong Wang#, Shaoning Li#, [Tong Wang*](https://www.microsoft.com/en-us/research/people/watong/), [Bin Shao](https://www.binshao.info/), Nanning Zheng, [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/). Geometric Transformer with Interatomic Positional Encoding. NeurIPS 2023.
 
