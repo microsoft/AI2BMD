@@ -6,7 +6,7 @@
 - [Datasets](#datasets)
 - [System Requirements](#system-requirements)
 - [Installation Guide](#installation-guide)
-- [Demo](#demo)
+- [Running AI<sup>2</sup>BMD](#running-ai2bmd)
 - [Model Architectures](#model-architectures)
 - [Related Research](#ai2bmd-related-research)
 - [Citation](#citation)
@@ -64,9 +64,51 @@ cd AI2BMD
 docker pull microsoft/ai2bmd:latest
 ```
 
-## Demo
+## Running AI<sup>2</sup>BMD
 
-Coming soon
+The main entry of the program is `main.py`. One can launch the program with the following command:
+
+```shell
+python main.py --prot-file path/to/target-protein.pdb --sim-steps nnn  ...
+#              '----------------- required arguments ----------------'
+#
+# Notable optional arguments:
+#
+#   --base-dir path/to/base-dir    A directory for running simulation (defaults to current directory)
+#   --log-dir  path/to/log-dir     A directory for saving results (defaults to base-dir/Logs-protein-name)
+#   --timestep nnn                 TimeStep (fs) for simulation
+#   --device-strategy [strategy]   The compute device allocation strategy
+#       small-molecule             Bonded/non-bonded/solvent computation share all GPUs, enable GPU oversubscription
+#       large-molecule             No multiple models on the same GPU
+#   --device-chunk nnn             When there's more than device_chunk elements (e.g. dipeptides) in a batch, split them into chunks
+#                                  and feed them into GPUs sequentially. Reduces memory consumption
+```
+
+### Running example
+
+Step 1: Launch the docker environment
+    - `docker run --gpus all -it --rm -v path/to/code:/AI2BMD visnet-codeocean`
+
+Step 2: Inside the docker environment, run the simulation program:
+
+```shell
+export LD_LIBRARY_PATH="/opt/conda/lib/":$LD_LIBRARY_PATH
+chmod a+x ./AIMD/Interface1
+chmod a+x ./AIMD/Interface2
+chmod a+x ./Calculators/visnet_calculator.py
+export PYTHONPATH=""
+python -u main.py --prot-file ./pacsin3.pdb --sim-steps 100 --device-strategy small-molecule --device-chunk 160
+```
+
+The results will be placed in a new directory `Logs-pacsin3`.
+
+### Result file listing
+
+The `Logs-chignolin` directory contains the following simulation result files
+
+- frames: Individual frames extracted from the simulated trajectory
+- chignolin-traj.xyz: frames combined into a single xyz file
+- chignolin-traj.traj: The full trajectory file in ASE binary format.
 
 ## Model Architectures
 
