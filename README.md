@@ -5,7 +5,7 @@
 - [Overview](#overview)
 - [Datasets](#datasets)
 - [System Requirements](#system-requirements)
-- [Installation Guide](#installation-guide)
+- [Setup Guide](#setup-guide)
 - [Running AI<sup>2</sup>BMD](#running-ai2bmd)
 - [Related Research](#ai2bmd-related-research)
 - [Citation](#citation)
@@ -25,7 +25,7 @@ AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dyna
 
 The whole comformation MD dataset for proteins calculated at Density Functional Theory (DFT) level. AIMD-Chig consists of 2M conformations of the 166-atom *Chignolin* and the corresponding potential energy and atomic forces calculated at M06-2X/6-31g* level.
 
-<img src="img/aimd-chig.png" width=50%> 
+<!--<img src="img/aimd-chig.png" width=50%>-->
 
 - Read the article [AIMD-Chig: Exploring the conformational space of a 166-atom protein Chignolin with ab initio molecular dynamics](https://www.nature.com/articles/s41597-023-02465-9).
 
@@ -33,9 +33,9 @@ The whole comformation MD dataset for proteins calculated at Density Functional 
 
 - Get the dataset [AIMD-Chig](https://figshare.com/articles/dataset/_strong_AIMD-Chig_exploring_the_conformational_space_of_166-atom_protein_strong_em_strong_Chignolin_strong_em_strong_with_strong_em_strong_ab_initio_strong_em_strong_molecular_dynamics_strong_/22786730).
 
-### System Requirements
+## System Requirements
 
-## Hardware Requirements
+### Hardware Requirements
 
 We recommend a machine with the following specs:
 
@@ -43,7 +43,7 @@ We recommend a machine with the following specs:
 - **Memory**: 32+ GB
 - **GPU**: CUDA-enabled GPU with 8+ GB memory
 
-## Software Requirements
+### Software Requirements
 
 The package has been tested on the following systems:
 
@@ -52,14 +52,14 @@ The package has been tested on the following systems:
 - **CUDA**: 11.3
 - **cuDNN**: 8
 
-## Installation Guide
+## Setup Guide
 
-### Step 1: Clone the repository
+### Clone Repository
 ```bash
 git clone https://github.com/microsoft/AI2BMD
 ```
 
-## Running Simulation
+### Running Simulation
 
 The main entry of the program is `scripts/ai2bmd`. One can run a simulation with the following command:
 
@@ -68,13 +68,7 @@ cd AI2BMD # Go to the root directory of the repository
 scripts/ai2bmd --prot-file testcases/chig.pdb --max-cyc 2
 ```
 
-The results will be placed in a new directory `Logs-pacsin3`.
-
-The `Logs-chignolin` directory contains the following simulation result files
-
-- frames: Individual frames extracted from the simulated trajectory
-- chignolin-traj.xyz: frames combined into a single xyz file
-- chignolin-traj.traj: The full trajectory file in ASE binary format.
+The results will be placed in a new directory `Logs-chig`.
 
 ##  AI<sup>2</sup>BMD Related Research
 
