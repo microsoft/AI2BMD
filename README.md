@@ -17,7 +17,7 @@
 
 AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains datasets, simulation programs, and public materials related to AI<sup>2</sup>BMD.
 
-<img src="https://github.com/microsoft/AI2BMD/tree/resources/images/ai2bmd_logo.png" width=30%> 
+<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/ai2bmd_logo.png?raw=true" width=50%>
 
 ## Datasets
 
@@ -29,7 +29,7 @@ The protein unit dataset covers a wide range of conformations for dipeptides. It
 
 The whole comformation MD dataset for proteins calculated at Density Functional Theory (DFT) level. AIMD-Chig consists of 2M conformations of the 166-atom *Chignolin* and the corresponding potential energy and atomic forces calculated at M06-2X/6-31g* level.
 
-<!--<img src="https://github.com/microsoft/AI2BMD/tree/resources/images/aimd-chig.png" width=50%>-->
+<!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/aimd-chig.png?raw=true" width=50%>-->
 
 - Read the article [AIMD-Chig: Exploring the conformational space of a 166-atom protein Chignolin with ab initio molecular dynamics](https://www.nature.com/articles/s41597-023-02465-9).
 
@@ -82,14 +82,14 @@ The results will be placed in a new directory `Logs-chig`.
 
 ViSNet (**V**ector-**S**calar **i**nteractive graph neural **Net**work) is an equivariant geometry-enhanced graph neural for molecules that significantly alleviates the dilemma between computational costs and the sufficient utilization of geometric information.
 
-<!--<img src="https://github.com/microsoft/AI2BMD/tree/resources/images/visnet_arch.png" width=50%>-->
+<!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/visnet_arch.png?raw=true" width=50%>-->
 
 - ViSNet is published on *Nature Communications* [Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing](https://www.nature.com/articles/s41467-023-43720-2).
 
 - ViSNet is selected as "Editors' Highlights" for both ["**AI and machine learning**"](https://www.nature.com/collections/ceiajcdbeb) and ["**Biotechnology and methods**"](https://www.nature.com/collections/idhhgedgig) fields of Nature Communications.
 
-<!--<img src="https://github.com/microsoft/AI2BMD/tree/resources/images/ai-eh.png" width=50%>-->
-<!--<img src="https://github.com/microsoft/AI2BMD/tree/resources/images/bio-eh.png" width=50%> -->
+<!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/ai-eh.png?raw=true" width=50%>-->
+<!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/bio-eh.png?raw=true" width=50%> -->
 
 - ViSNet has won the Championship in [The First Global AI Drug Development Competition](https://aistudio.baidu.com/competition/detail/1012/0/leaderboard) and one of the winners in [OGB-LSC @ NeurIPS 2022 PCQM4Mv2 Track](https://ogb.stanford.edu/neurips2022/results/)! 
 
@@ -103,7 +103,7 @@ Geoformer (**Geo**metric Trans**former**) is a novel geometric Transformer to ef
 - Read the paper of Geoformer [Geometric Transformer with Interatomic Positional Encoding](https://github.com/microsoft/AI2BMD/tree/Geoformer/Geoformer.pdf).
 - Please check out the branch [Geoformer](https://github.com/microsoft/AI2BMD/tree/Geoformer) for the source code, instructions on model training, and more techniqucal details.
 
-<!--<img src="https://github.com/microsoft/AI2BMD/tree/resources/images/geoformer.png" width=50%>-->
+<!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/geoformer.png?raw=true" width=50%>-->
 
 #### Fine-grained force metrics for MLFF
 
@@ -111,7 +111,7 @@ Machine learning force fields (MLFFs) have gained popularity in recent years as 
 
 To alleviate these issues, we propose the use of global force metrics and fine-grained metrics from elemental and conformational aspects to systematically measure MLFFs for every atom and conformation of molecules. Furthermore, the performance of MLFFs and the stability of MD simulations can be enhanced by employing the proposed force metrics during model training. This includes training MLFF models using these force metrics as loss functions, fine-tuning by reweighting samples in the original dataset, and continued training by incorporating additional unexplored data.
 
-<!--<img src="https://github.com/microsoft/AI2BMD/tree/resources/images/mlff.jpg" width=25%>-->
+<!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/mlff.jpg?raw=true" width=25%>-->
 
 - Read the Cover Story article [Improving machine learning force fields for molecular dynamics simulations with fine-grained force metrics](https://pubs.aip.org/aip/jcp/article-abstract/159/3/035101/2902663/Improving-machine-learning-force-fields-for?redirectedFrom=fulltext) .
 
@@ -121,7 +121,7 @@ Markov state models (MSMs) play a key role in studying protein conformational dy
 
 To alleviate this, we propose a novel stochastic method based on a Poisson process to generate perturbative lag times for sub-trajectory sampling and use it to construct a Markov chain. Comprehensive evaluations on the double-well system, WW domain, BPTI, and RBD–ACE2 complex of SARS-CoV-2 reveal that our algorithm significantly increases the robustness and accuracy of the constructed MSM without disrupting its Markovian properties. Furthermore, the advantages of our algorithm are especially pronounced for slow dynamic modes in complex biological processes.
 
-<!--<img src="https://github.com/microsoft/AI2BMD/tree/resources/images/markov.jpg" width=25%>-->
+<!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/markov.jpg?raw=true" width=25%>-->
 
 - Read the Cover Story article [Stochastic Lag Time Parameterization for Markov State Models of Protein Dynamics](https://pubs.acs.org/doi/10.1021/acs.jpcb.2c03711).
 
