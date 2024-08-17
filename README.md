@@ -57,53 +57,18 @@ The package has been tested on the following systems:
 ### Step 1: Clone the repository
 ```bash
 git clone https://github.com/microsoft/AI2BMD
-cd AI2BMD
 ```
 
-### Step 2: Download the docker image
-```bash
-docker pull microsoft/ai2bmd:latest
-```
+## Running Simulation
 
-## Running AI<sup>2</sup>BMD
-
-The main entry of the program is `main.py`. One can launch the program with the following command:
+The main entry of the program is `scripts/ai2bmd`. One can run a simulation with the following command:
 
 ```shell
-python main.py --prot-file path/to/target-protein.pdb --sim-steps nnn  ...
-#              '----------------- required arguments ----------------'
-#
-# Notable optional arguments:
-#
-#   --base-dir path/to/base-dir    A directory for running simulation (defaults to current directory)
-#   --log-dir  path/to/log-dir     A directory for saving results (defaults to base-dir/Logs-protein-name)
-#   --timestep nnn                 TimeStep (fs) for simulation
-#   --device-strategy [strategy]   The compute device allocation strategy
-#       small-molecule             Bonded/non-bonded/solvent computation share all GPUs, enable GPU oversubscription
-#       large-molecule             No multiple models on the same GPU
-#   --device-chunk nnn             When there's more than device_chunk elements (e.g. dipeptides) in a batch, split them into chunks
-#                                  and feed them into GPUs sequentially. Reduces memory consumption
-```
-
-### Running example
-
-Step 1: Launch the docker environment
-    - `docker run --gpus all -it --rm -v path/to/code:/AI2BMD visnet-codeocean`
-
-Step 2: Inside the docker environment, run the simulation program:
-
-```shell
-export LD_LIBRARY_PATH="/opt/conda/lib/":$LD_LIBRARY_PATH
-chmod a+x ./AIMD/Interface1
-chmod a+x ./AIMD/Interface2
-chmod a+x ./Calculators/visnet_calculator.py
-export PYTHONPATH=""
-python -u main.py --prot-file ./pacsin3.pdb --sim-steps 100 --device-strategy small-molecule --device-chunk 160
+cd AI2BMD # Go to the root directory of the repository
+scripts/ai2bmd --prot-file testcases/chig.pdb --max-cyc 2
 ```
 
 The results will be placed in a new directory `Logs-pacsin3`.
-
-### Result file listing
 
 The `Logs-chignolin` directory contains the following simulation result files
 
@@ -184,5 +149,5 @@ AI<sup>2</sup>BMD is a research project. It is not an officially supported Micro
 
 ## Contacts
 
-Please contact <A href="https://github.com/microsoft/AI2BMD" target="_blank"  onclick="a='ai2bmd'; b='microsoft.com'; $('#eml').html(a+'@'+b); return false;" onClick="stc(this, 20)">AI2BMD Team</A><span id="eml"></span> for any questions or suggestions.
+Please contact <A href="mailto:ai2bmd@microsoft.com">AI2BMD Team</A> for any questions or suggestions.
 
