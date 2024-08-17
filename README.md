@@ -144,7 +144,7 @@ Shiqi Gong#, Xinheng He#, Qi Meng, Zhiming Ma, [Bin Shao*](https://www.binshao.i
 
 Copyright (c) Microsoft Corporation. All rights reserved.
 
-Licensed under the [MIT](LICENSE.md) license.
+Licensed under the [MIT](LICENSE) license.
 
 ## Disclaimer
 
