@@ -15,13 +15,17 @@
 
 ## Overview
 
-AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains datasets, model architectures, simulation programs, and papers related to AI<sup>2</sup>BMD.
+AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains datasets, simulation programs, and public materials related to AI<sup>2</sup>BMD.
 
 <img src="img/ai2bmd_logo.png" width=30%> 
 
 ## Datasets
 
-### AIMD-Chig
+### Protein Unit Dataset
+
+The protein unit dataset covers a wide range of conformations for dipeptides. It can be downloaded from the following link: [AI2BMD Protein Unit Dataset](https://aka.ms/ai2bmd-protein-unit-dataset).
+
+### AIMD-Chig Dataset
 
 The whole comformation MD dataset for proteins calculated at Density Functional Theory (DFT) level. AIMD-Chig consists of 2M conformations of the 166-atom *Chignolin* and the corresponding potential energy and atomic forces calculated at M06-2X/6-31g* level.
 
@@ -76,11 +80,11 @@ The results will be placed in a new directory `Logs-chig`.
 
 #### ViSNet
 
-ViSNet (shorted for “**V**ector-**S**calar **i**nteractive graph neural **Net**work”) is an equivariant geometry-enhanced graph neural for molecules that significantly alleviate the dilemma between computational costs and sufficient utilization of geometric information.
+ViSNet (**V**ector-**S**calar **i**nteractive graph neural **Net**work) is an equivariant geometry-enhanced graph neural for molecules that significantly alleviates the dilemma between computational costs and the sufficient utilization of geometric information.
 
 <!--<img src="img/visnet_arch.png" width=50%>-->
 
-- ViSNet is published on *Nature Communications* [Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing](https://www.nature.com/articles/s41467-023-43720-2)
+- ViSNet is published on *Nature Communications* [Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing](https://www.nature.com/articles/s41467-023-43720-2).
 
 - ViSNet is selected as "Editors' Highlights" for both ["**AI and machine learning**"](https://www.nature.com/collections/ceiajcdbeb) and ["**Biotechnology and methods**"](https://www.nature.com/collections/idhhgedgig) fields of Nature Communications.
 
@@ -89,20 +93,23 @@ ViSNet (shorted for “**V**ector-**S**calar **i**nteractive graph neural **Net*
 
 - ViSNet has won the Championship in [The First Global AI Drug Development Competition](https://aistudio.baidu.com/competition/detail/1012/0/leaderboard) and one of the winners in [OGB-LSC @ NeurIPS 2022 PCQM4Mv2 Track](https://ogb.stanford.edu/neurips2022/results/)! 
 
-- Please check out the branch [ViSNet](https://github.com/microsoft/AI2BMD/tree/ViSNet) for the source code, instruction on model training and more techniqucal details.
+- Please check out the branch [ViSNet](https://github.com/microsoft/AI2BMD/tree/ViSNet) for the source code, instructions on model training, and more techniqucal details.
   
 #### Geoformer
-Geoformer (short for "**Geo**metric Trans**former**") is a novel geometric Transformer to effectively model molecular structures for various molecular property prediction. Geoformer introduces a novel positional encoding method, i.e., Interatomic Positional Encoding (IPE) to parameterize atomic environments in Transformer. By incorporating IPE, Geoformer models valuable geometric information beyond pairwise distances for Transformer-based architecture. Geoformer can be recognized as a Transformer variant of ViSNet.
 
-- Geoformer is published on 37th Conference on Neural Information Processing Systems (NeurIPS 2023).
+Geoformer (**Geo**metric Trans**former**) is a novel geometric Transformer to effectively model molecular structures for various molecular property predictions. Geoformer introduces a novel positional encoding method, Interatomic Positional Encoding (IPE), to parameterize atomic environments in Transformer. By incorporating IPE, Geoformer captures valuable geometric information beyond pairwise distances within a Transformer-based architecture. Geoformer can be regarded as a Transformer variant of ViSNet.
+
+- Geoformer was published on NeurIPS 2023.
 - Read the paper of Geoformer [Geometric Transformer with Interatomic Positional Encoding](https://github.com/microsoft/AI2BMD/tree/Geoformer/Geoformer.pdf).
-- Please check out the branch [Geoformer](https://github.com/microsoft/AI2BMD/tree/Geoformer) for the source code, instruction on model training and more techniqucal details.
+- Please check out the branch [Geoformer](https://github.com/microsoft/AI2BMD/tree/Geoformer) for the source code, instructions on model training, and more techniqucal details.
 
 <!--<img src="img/geoformer.png" width=50%>-->
 
 #### Fine-grained force metrics for MLFF
 
-Machine learning force fields (MLFFs) have gained popularity in recent years as they provide a cost-effective alternative to *ab initio* molecular dynamics (MD) simulations. Despite a small error on the test set, MLFFs inherently suffer from generalization and robustness issues during MD simulations. To alleviate these issues, we propose global force metrics and fine-grained metrics from element and conformation aspects to systematically measure MLFFs for every atom and every conformation of molecules. Furthermore, the performance of MLFFs and the stability of MD simulations can be further improved guided by the proposed force metrics for model training, specifically training MLFF models with these force metrics as loss functions, fine-tuning by reweighting samples in the original dataset, and continued training by recruiting additional unexplored data.
+Machine learning force fields (MLFFs) have gained popularity in recent years as a cost-effective alternative to *ab initio* molecular dynamics (MD) simulations. Despite their small errors on test sets, MLFFs inherently suffer from generalization and robustness issues during MD simulations.
+
+To alleviate these issues, we propose the use of global force metrics and fine-grained metrics from elemental and conformational aspects to systematically measure MLFFs for every atom and conformation of molecules. Furthermore, the performance of MLFFs and the stability of MD simulations can be enhanced by employing the proposed force metrics during model training. This includes training MLFF models using these force metrics as loss functions, fine-tuning by reweighting samples in the original dataset, and continued training by incorporating additional unexplored data.
 
 <!--<img src="img/mlff.jpg" width=25%>-->
 
@@ -110,7 +117,9 @@ Machine learning force fields (MLFFs) have gained popularity in recent years as 
 
 #### Stochastic lag time parameterization for Markov State Model
 
-Markov state models (MSMs) play a key role in studying protein conformational dynamics. A sliding count window with a fixed lag time is widely used to sample sub-trajectories for transition counting and MSM construction. However, sub-trajectories sampled with a fixed lag time may not perform well under different selections of lag time, which requires strong prior practice and leads to less robust estimation. To alleviate it, we propose a novel stochastic method from a Poisson process to generate perturbative lag time for sub-trajectory sampling and utilize it to construct a Markov chain. Comprehensive evaluations on the double-well system, WW domain, BPTI, and RBD–ACE2 complex of SARS-CoV-2 reveal that our algorithm significantly increases the robustness and power of a constructed MSM without disturbing the Markovian properties. Furthermore, the superiority of our algorithm is amplified for slow dynamic modes in complex biological processes.
+Markov state models (MSMs) play a key role in studying protein conformational dynamics. A sliding count window with a fixed lag time is commonly used to sample sub-trajectories for transition counting and MSM construction. However, sub-trajectories sampled with a fixed lag time may not perform well under different selections of lag time, requiring strong prior experience and resulting in less robust estimations.
+
+To alleviate this, we propose a novel stochastic method based on a Poisson process to generate perturbative lag times for sub-trajectory sampling and use it to construct a Markov chain. Comprehensive evaluations on the double-well system, WW domain, BPTI, and RBD–ACE2 complex of SARS-CoV-2 reveal that our algorithm significantly increases the robustness and accuracy of the constructed MSM without disrupting its Markovian properties. Furthermore, the advantages of our algorithm are especially pronounced for slow dynamic modes in complex biological processes.
 
 <!--<img src="img/markov.jpg" width=25%>-->
 
