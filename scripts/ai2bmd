@@ -14,6 +14,7 @@ _docker_image_data2 = "ghcr.io/microsoft/ai2bmd:training-data2"
 _docker_image_data3 = "ghcr.io/microsoft/ai2bmd:training-data3"
 _docker_image_data4 = "ghcr.io/microsoft/ai2bmd:training-data4"
 _docker_image_data5 = "ghcr.io/microsoft/ai2bmd:training-data5"
+_docker_image_data6 = "ghcr.io/microsoft/ai2bmd:training-data5"
 _src_dir = "/ai2bmd"
 
 def parse_args(argv):
@@ -264,7 +265,8 @@ def main() -> None:
             f"docker pull {_docker_image_data2} && "
             f"docker pull {_docker_image_data3} && "
             f"docker pull {_docker_image_data4} && "
-            f"docker pull {_docker_image_data5}"
+            f"docker pull {_docker_image_data5} && "
+            f"docker pull {_docker_image_data6}"
             )
         run('>>> Unpacking data...',
             f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
@@ -281,6 +283,9 @@ def main() -> None:
             f"docker cp {container_name}:/ai2bmd-training-part-4.tar.xz - | tar x -O | tar xJv &&"
             f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
             f"docker create --name {container_name} {_docker_image_data5} bash && "
+            f"docker cp {container_name}:/ai2bmd-training-part-4.tar.xz - | tar x -O | tar xJv &&"
+            f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
+            f"docker create --name {container_name} {_docker_image_data6} bash && "
             f"docker cp {container_name}:/ai2bmd-training-part-5.tar.xz - | tar x -O | tar xJv"
             )
         run('>>> Cleaning up...',
@@ -289,7 +294,8 @@ def main() -> None:
             f"docker image rm {_docker_image_data2} && "
             f"docker image rm {_docker_image_data3} && "
             f"docker image rm {_docker_image_data4} && "
-            f"docker image rm {_docker_image_data5}"
+            f"docker image rm {_docker_image_data5} && "
+            f"docker image rm {_docker_image_data6}"
             )
         print('>>> Done.')
         exit(0)
