@@ -27,7 +27,7 @@ To run the simulation software, you don't need to clone this repository. Simply 
 wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
 chmod +x ai2bmd
 ./ai2bmd --prot-file path/to/target-protein.pdb --sim-steps nnn  ...
-#        '-------- required argument ---------' '------ optional arguments------'
+#        '-------- required argument ---------' '-- optional arguments --'
 #
 # Notable optional arguments:
 #
