@@ -283,10 +283,10 @@ def main() -> None:
             f"docker cp {container_name}:/ai2bmd-training-part-4.tar.xz - | tar x -O | tar xJv &&"
             f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
             f"docker create --name {container_name} {_docker_image_data5} bash && "
-            f"docker cp {container_name}:/ai2bmd-training-part-4.tar.xz - | tar x -O | tar xJv &&"
+            f"docker cp {container_name}:/ai2bmd-training-part-5.tar.xz - | tar x -O | tar xJv &&"
             f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
             f"docker create --name {container_name} {_docker_image_data6} bash && "
-            f"docker cp {container_name}:/ai2bmd-training-part-5.tar.xz - | tar x -O | tar xJv"
+            f"docker cp {container_name}:/ai2bmd-training-part-6.tar.xz - | tar x -O | tar xJv"
             )
         run('>>> Cleaning up...',
             f"docker container rm {container_name} && "
