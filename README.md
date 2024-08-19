@@ -188,7 +188,8 @@ To alleviate this, we propose a novel stochastic method based on a Poisson proce
 
 
 ## Citation
-(#:co-first author; *:corresponding author)
+(#: co-first author; *: corresponding author)
+
 Yusong Wang#, [Tong Wang#*](https://www.microsoft.com/en-us/research/people/watong/), Shaoning Li#, Xinheng He, Mingyu Li, [Zun Wang](https://www.microsoft.com/en-us/research/people/zunwang/), Nanning Zheng, [Bin Shao*](https://www.binshao.info/), [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/), Enhancing geometric representations for molecules with equivariant vector-scalar interactive message passing, Nature Communications, 15.1 (2024): 313. 
 
 Yusong Wang#, Shaoning Li#, [Tong Wang*](https://www.microsoft.com/en-us/research/people/watong/), [Bin Shao](https://www.binshao.info/), Nanning Zheng, [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/). Geometric Transformer with Interatomic Positional Encoding. NeurIPS 2023.
