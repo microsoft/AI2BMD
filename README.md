@@ -18,11 +18,84 @@ AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dyna
 
 <img src="https://github.com/microsoft/AI2BMD/blob/resources/images/ai2bmd_logo.png?raw=true" width=50%>
 
+## Running the simulation software
+
+The source code of the AI<sup>2</sup>BMD is hosted in this git repository. To streamline the user experience we also pack the source code, together with the runtime libraries into a Docker image, and present a standalone launcher program to ease the deployment process.
+To run the simulation software, you don't need to clone this repository. Simply download `scripts/ai2bmd` and launch it:
+
+```shell
+wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
+chmod +x ai2bmd
+./ai2bmd --prot-file path/to/target-protein.pdb --sim-steps nnn  ...
+#        '-------- required argument ---------' '------ optional arguments------'
+#
+# Notable optional arguments:
+#
+# [Simulation directory mapping options]
+#   --base-dir path/to/base-dir    A directory for running simulation (defaults to current directory)
+#   --log-dir  path/to/log-dir     A directory for saving results (defaults to base-dir/Logs-protein-name)
+#
+# [Simulation parameter options]
+#   --sim-steps nnn                Simulation steps
+#   --temp-k nnn                   Simulation temperature in Kelvin
+#   --timestep nnn                 TimeStep (fs) for simulation
+#   --preeq-steps nnn              Pre-equilibration simulation steps for each constraint
+#   --max-cyc nnn                  Maximum energy minimization cycles in preprocessing
+#
+# [Performance tweaks]
+#   --device-strategy [strategy]   The compute device allocation strategy
+#       small-molecule             Bonded/non-bonded/solvent computation share all GPUs, enable GPU oversubscription
+#       large-molecule             No multiple models on the same GPU
+#   --chunk-size nnn               When there's more than device_chunk elements (e.g. dipeptides) in a batch, split them into chunks
+#                                  and feed them into GPUs sequentially. Reduces memory consumption
+#
+# [Additional launcher options]
+#   --software-update              When specified, updates the program in the Docker image before running
+#   --download-training-data       When specified, downloads the AI2BMD training data, and unpacks it in the working directory. 
+#                                  Ignores all other options.
+#   --gpus                         Specifies the GPU devices to passthrough to the program. Can be one of the following:
+#                                  all:        Passthrough all available GPUs to the program.
+#                                  none:       Disables GPU passthrough.
+#                                  i[,j,k...]  Passthrough some GPUs. Example: --gpus 0,1
+```
+
+## Running example
+
+The code repository also contains a few ready-to-use protein structures in the `testcases` directory. Here we use the Chignolin structure as an example:
+
+```shell
+# skip the following two lines if you've already set up the launcher
+wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
+chmod +x ai2bmd
+# download the Chignolin protein structure data file
+wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/testcases/chig.pdb'
+# launch the program, with all simulation parameters set to default values
+./ai2bmd --prot-file chig.pdb
+```
+
+The results will be placed in a new directory `Logs-chig`.
+
+## Result file listing
+
+The `Logs-chig` directory contains the following simulation result files:
+
+- chig-traj.traj: The full trajectory file in ASE binary format.
+
+
 ## Datasets
 
 ### Protein Unit Dataset
 
-The protein unit dataset covers a wide range of conformations for dipeptides. It can be downloaded from the following link: [AI2BMD Protein Unit Dataset](https://aka.ms/ai2bmd-protein-unit-dataset).
+The protein unit dataset covers a wide range of conformations for dipeptides. It can be downloaded with the following commands: 
+
+```shell
+# skip the following two lines if you've already set up the launcher
+wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
+chmod +x ai2bmd
+./ai2bmd --download-training-data
+```
+
+When it finishes, the current working directory will be populated by the numpy data files (e.g. AA.npz).
 
 ### AIMD-Chig Dataset
 
@@ -40,6 +113,7 @@ The whole comformation MD dataset for proteins calculated at Density Functional 
 
 ### Hardware Requirements
 
+This software can be run on x86-64 GNU/Linux systems.
 We recommend a machine with the following specs:
 
 - **CPU**: 8+ cores
@@ -50,26 +124,8 @@ We recommend a machine with the following specs:
 
 The package has been tested on the following systems:
 
-- **OS**: Ubuntu 20.04
-- **Docker**: 27.1
-
-## Setup Guide
-
-### Clone Repository
-```bash
-git clone https://github.com/microsoft/AI2BMD
-```
-
-### Running Simulation
-
-The main entry of the program is `scripts/ai2bmd`. One can run a simulation with the following command:
-
-```shell
-cd AI2BMD # Go to the root directory of the repository
-scripts/ai2bmd --prot-file testcases/chig.pdb --max-cyc 2
-```
-
-The results will be placed in a new directory `Logs-chig`.
+- **OS**: Ubuntu 20.04,  **Docker**: 27.1
+- **OS**: ArchLinux,  **Docker**: 26.1
 
 ##  AI<sup>2</sup>BMD Related Research
 
