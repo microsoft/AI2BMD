@@ -6,7 +6,6 @@
 - [Datasets](#datasets)
 - [System Requirements](#system-requirements)
 - [Setup Guide](#setup-guide)
-- [Running AI<sup>2</sup>BMD](#running-ai2bmd)
 - [Related Research](#ai2bmd-related-research)
 - [Citation](#citation)
 - [License](#license)
@@ -52,9 +51,7 @@ We recommend a machine with the following specs:
 The package has been tested on the following systems:
 
 - **OS**: Ubuntu 20.04
-- **Python**: 3.9
-- **CUDA**: 11.3
-- **cuDNN**: 8
+- **Docker**: 27.1
 
 ## Setup Guide
 
