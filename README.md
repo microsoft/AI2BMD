@@ -3,9 +3,9 @@
 ## Contents
 
 - [Overview](#overview)
+- [Running the Simulation Software](#running-simulation)
 - [Datasets](#datasets)
 - [System Requirements](#system-requirements)
-- [Setup Guide](#setup-guide)
 - [Related Research](#ai2bmd-related-research)
 - [Citation](#citation)
 - [License](#license)
@@ -18,7 +18,7 @@ AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dyna
 
 <img src="https://github.com/microsoft/AI2BMD/blob/resources/images/ai2bmd_logo.png?raw=true" width=50%>
 
-## Running the simulation software
+## Running the Simulation Software
 
 The source code of the AI<sup>2</sup>BMD is hosted in this git repository. To streamline the user experience we also pack the source code, together with the runtime libraries into a Docker image, and present a standalone launcher program to ease the deployment process.
 To run the simulation software, you don't need to clone this repository. Simply download `scripts/ai2bmd` and launch it:
@@ -59,7 +59,7 @@ chmod +x ai2bmd
 #                                  i[,j,k...]  Passthrough some GPUs. Example: --gpus 0,1
 ```
 
-## Running example
+### Running example
 
 The code repository also contains a few ready-to-use protein structures in the `testcases` directory. Here we use the Chignolin structure as an example:
 
@@ -75,7 +75,7 @@ wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/testcases/chig.pdb
 
 The results will be placed in a new directory `Logs-chig`.
 
-## Result file listing
+### Result file listing
 
 The `Logs-chig` directory contains the following simulation result files:
 
