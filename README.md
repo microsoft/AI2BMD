@@ -3,7 +3,7 @@
 ## Contents
 
 - [Overview](#overview)
-- [Running the Simulation Software](#running-simulation)
+- [Setup Guide](#running-the-simulation-software)
 - [Datasets](#datasets)
 - [System Requirements](#system-requirements)
 - [Related Research](#ai2bmd-related-research)
