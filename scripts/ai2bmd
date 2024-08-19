@@ -9,7 +9,11 @@ import sys
 from os import path as osp
 
 _docker_image = "ghcr.io/microsoft/ai2bmd:latest"
-_docker_image_data = "ghcr.io/microsoft/ai2bmd:training-data"
+_docker_image_data1 = "ghcr.io/microsoft/ai2bmd:training-data1"
+_docker_image_data2 = "ghcr.io/microsoft/ai2bmd:training-data2"
+_docker_image_data3 = "ghcr.io/microsoft/ai2bmd:training-data3"
+_docker_image_data4 = "ghcr.io/microsoft/ai2bmd:training-data4"
+_docker_image_data5 = "ghcr.io/microsoft/ai2bmd:training-data5"
 _src_dir = "/ai2bmd"
 
 def parse_args(argv):
@@ -256,14 +260,37 @@ def main() -> None:
     if "--download-training-data" in argv:
         container_name = "ai2bmd_training_data_copy_container"
         run('>>> Downloading AI2BMD training data...',
-            f"docker pull {_docker_image_data}")
+            f"docker pull {_docker_image_data1} && "
+            f"docker pull {_docker_image_data2} && "
+            f"docker pull {_docker_image_data3} && "
+            f"docker pull {_docker_image_data4} && "
+            f"docker pull {_docker_image_data5}"
+            )
         run('>>> Unpacking data...',
-            f"docker container container rm {container_name} 1> /dev/null 2> /dev/null || true && "
-            f"docker create --name {container_name} {_docker_image_data} bash && "
-            f"docker cp {container_name}:/ai2bmd-training.tar.xz - | tar x -O | tar xJv")
+            f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
+            f"docker create --name {container_name} {_docker_image_data1} bash && "
+            f"docker cp {container_name}:/ai2bmd-training-part-1.tar.xz - | tar x -O | tar xJv &&"
+            f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
+            f"docker create --name {container_name} {_docker_image_data2} bash && "
+            f"docker cp {container_name}:/ai2bmd-training-part-2.tar.xz - | tar x -O | tar xJv &&"
+            f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
+            f"docker create --name {container_name} {_docker_image_data3} bash && "
+            f"docker cp {container_name}:/ai2bmd-training-part-3.tar.xz - | tar x -O | tar xJv &&"
+            f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
+            f"docker create --name {container_name} {_docker_image_data4} bash && "
+            f"docker cp {container_name}:/ai2bmd-training-part-4.tar.xz - | tar x -O | tar xJv &&"
+            f"docker container rm {container_name} 1> /dev/null 2> /dev/null || true && "
+            f"docker create --name {container_name} {_docker_image_data5} bash && "
+            f"docker cp {container_name}:/ai2bmd-training-part-5.tar.xz - | tar x -O | tar xJv"
+            )
         run('>>> Cleaning up...',
             f"docker container rm {container_name} && "
-            f"docker image rm {_docker_image_data}")
+            f"docker image rm {_docker_image_data1} && "
+            f"docker image rm {_docker_image_data2} && "
+            f"docker image rm {_docker_image_data3} && "
+            f"docker image rm {_docker_image_data4} && "
+            f"docker image rm {_docker_image_data5}"
+            )
         print('>>> Done.')
         exit(0)
 
