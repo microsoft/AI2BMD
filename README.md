@@ -20,8 +20,8 @@ AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dyna
 
 ## Running the Simulation Software
 
-The source code of the AI<sup>2</sup>BMD is hosted in this git repository. To streamline the user experience we also pack the source code, together with the runtime libraries into a Docker image, and present a standalone launcher program to ease the deployment process.
-To run the simulation software, you don't need to clone this repository. Simply download `scripts/ai2bmd` and launch it:
+The source code of the AI<sup>2</sup>BMD is hosted in this git repository. To streamline the user experience we also pack the source code, together with the runtime libraries into a Docker image, and present a Python launcher program to ease the deployment process.
+To run the simulation software, you don't need to clone this repository. Simply download `scripts/ai2bmd` and launch it (Python >=3.7 is required):
 
 ```shell
 wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
