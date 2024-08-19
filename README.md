@@ -120,6 +120,12 @@ We recommend a machine with the following specs:
 - **Memory**: 32+ GB
 - **GPU**: CUDA-enabled GPU with 8+ GB memory
 
+The package has been tested on the following GPUs:
+- A100
+- V100
+- RTX A6000
+- Titan RTX
+
 ### Software Requirements
 
 The package has been tested on the following systems:
