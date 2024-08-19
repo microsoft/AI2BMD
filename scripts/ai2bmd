@@ -14,7 +14,7 @@ _docker_image_data2 = "ghcr.io/microsoft/ai2bmd:training-data2"
 _docker_image_data3 = "ghcr.io/microsoft/ai2bmd:training-data3"
 _docker_image_data4 = "ghcr.io/microsoft/ai2bmd:training-data4"
 _docker_image_data5 = "ghcr.io/microsoft/ai2bmd:training-data5"
-_docker_image_data6 = "ghcr.io/microsoft/ai2bmd:training-data5"
+_docker_image_data6 = "ghcr.io/microsoft/ai2bmd:training-data6"
 _src_dir = "/ai2bmd"
 
 def parse_args(argv):

@@ -26,6 +26,7 @@ To run the simulation software, you don't need to clone this repository. Simply 
 ```shell
 wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
 chmod +x ai2bmd
+# you may need to "sudo" the following line if the docker group is not configured for the user
 ./ai2bmd --prot-file path/to/target-protein.pdb --sim-steps nnn  ...
 #        '-------- required argument ---------' '-- optional arguments --'
 #
@@ -70,6 +71,7 @@ chmod +x ai2bmd
 # download the Chignolin protein structure data file
 wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/testcases/chig.pdb'
 # launch the program, with all simulation parameters set to default values
+# you may need to "sudo" the following line if the docker group is not configured for the user
 ./ai2bmd --prot-file chig.pdb
 ```
 
@@ -92,6 +94,7 @@ The protein unit dataset covers a wide range of conformations for dipeptides. It
 # skip the following two lines if you've already set up the launcher
 wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
 chmod +x ai2bmd
+# you may need to "sudo" the following line if the docker group is not configured for the user
 ./ai2bmd --download-training-data
 ```
 
