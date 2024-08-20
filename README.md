@@ -215,7 +215,7 @@ AI<sup>2</sup>BMD is a research project. It is not an officially supported Micro
 
 Please contact <A href="mailto:ai2bmd@microsoft.com">AI2BMD Team</A> for any questions or suggestions. The main team members include:
 
-- [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/) (Primary lead)
+- [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/) (Primary lead/contact)
 - [Yatao Li](https://www.microsoft.com/en-us/research/people/yatli/)
 - [Ran Bi](https://www.microsoft.com/en-us/research/people/biran/)
 - [Bin Shao](https://www.binshao.info/)
