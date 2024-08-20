@@ -96,7 +96,7 @@ chmod +x ai2bmd
 ./ai2bmd --download-training-data
 ```
 
-When it finishes, the current working directory will be populated by the numpy data files (e.g. AA.npz).
+When it finishes, the current working directory will be populated by the numpy data files (*.npz).
 
 ### AIMD-Chig Dataset
 
@@ -213,5 +213,10 @@ AI<sup>2</sup>BMD is a research project. It is not an officially supported Micro
 
 ## Contacts
 
-Please contact <A href="mailto:ai2bmd@microsoft.com">AI2BMD Team</A> for any questions or suggestions.
+Please contact <A href="mailto:ai2bmd@microsoft.com">AI2BMD Team</A> for any questions or suggestions. The main team members include:
 
+- [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/)
+- [Yatao Li](https://www.microsoft.com/en-us/research/people/yatli/)
+- [Ran Bi](https://www.microsoft.com/en-us/research/people/biran/)
+- [Bin Shao](https://www.binshao.info/)
+- [Tie-Yan Liu](https://www.microsoft.com/en-us/research/people/tyliu/)
