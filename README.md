@@ -3,7 +3,7 @@
 ## Contents
 
 - [Overview](#overview)
-- [Setup Guide](#running-the-simulation-software)
+- [Setup Guide](#ai2bmd-setup-guide)
 - [Datasets](#datasets)
 - [System Requirements](#system-requirements)
 - [Related Research](#ai2bmd-related-research)
@@ -18,10 +18,11 @@ AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dyna
 
 <img src="https://github.com/microsoft/AI2BMD/blob/resources/images/ai2bmd_logo.png?raw=true" width=50%>
 
-## Running the Simulation Software
+## AI<sup>2</sup>BMD Setup Guide
 
-The source code of the AI<sup>2</sup>BMD is hosted in this git repository. To streamline the user experience we also pack the source code, together with the runtime libraries into a Docker image, and present a Python launcher program to ease the deployment process.
-To run the simulation software, you don't need to clone this repository. Simply download `scripts/ai2bmd` and launch it (Python >=3.7 is required):
+The source code of AI<sup>2</sup>BMD is hosted in this repository. 
+To streamline the user experience, we package the source code and runtime libraries into a Docker image, and provide a Python launcher program to simplify the deployment process.
+To run the simulation program, you don't need to clone this repository. Simply download `scripts/ai2bmd` and launch it (Python >=3.7 is required).
 
 ```shell
 wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
@@ -60,9 +61,9 @@ chmod +x ai2bmd
 #                                  i[,j,k...]  Passthrough some GPUs. Example: --gpus 0,1
 ```
 
-### Running example
+### Running Simulation
 
-The code repository also contains a few ready-to-use protein structures in the `testcases` directory. Here we use the Chignolin structure as an example:
+The code repository contains several sample protein structures in the `testcases` directory. Here we use the Chignolin structure as an example:
 
 ```shell
 # skip the following two lines if you've already set up the launcher
@@ -76,10 +77,7 @@ wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/testcases/chig.pdb
 ```
 
 The results will be placed in a new directory `Logs-chig`.
-
-### Result file listing
-
-The `Logs-chig` directory contains the following simulation result files:
+The directory contains the simulation trajectory file:
 
 - chig-traj.traj: The full trajectory file in ASE binary format.
 
