@@ -114,14 +114,14 @@ The whole comformation MD dataset for proteins calculated at Density Functional 
 
 ### Hardware Requirements
 
-This software can be run on x86-64 GNU/Linux systems.
+The AI<sup>2</sup>BMD program runs on x86-64 GNU/Linux systems.
 We recommend a machine with the following specs:
 
 - **CPU**: 8+ cores
 - **Memory**: 32+ GB
 - **GPU**: CUDA-enabled GPU with 8+ GB memory
 
-The package has been tested on the following GPUs:
+The program has been tested on the following GPUs:
 - A100
 - V100
 - RTX A6000
@@ -129,7 +129,7 @@ The package has been tested on the following GPUs:
 
 ### Software Requirements
 
-The package has been tested on the following systems:
+The program has been tested on the following systems:
 
 - **OS**: Ubuntu 20.04,  **Docker**: 27.1
 - **OS**: ArchLinux,  **Docker**: 26.1
