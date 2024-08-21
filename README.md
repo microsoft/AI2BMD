@@ -63,7 +63,7 @@ chmod +x ai2bmd
 
 ### Running Simulation
 
-The code repository contains several sample protein structures in the `testcases` directory. Here we use the Chignolin structure as an example:
+We can run a molecular dynamics simulation as follows.
 
 ```shell
 # skip the following two lines if you've already set up the launcher
@@ -75,6 +75,9 @@ wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/resources/samples/chig.
 # you may need to "sudo" the following line if the docker group is not configured for the user
 ./ai2bmd --prot-file chig.pdb
 ```
+
+Here we use the Chignolin protein as an example.
+The program will run a simulation with the default parameters.
 
 The results will be placed in a new directory `Logs-chig`.
 The directory contains the simulation trajectory file:
