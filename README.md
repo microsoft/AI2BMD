@@ -70,7 +70,7 @@ The code repository contains several sample protein structures in the `testcases
 wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/scripts/ai2bmd'
 chmod +x ai2bmd
 # download the Chignolin protein structure data file
-wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/testcases/chig.pdb'
+wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/resources/samples/chig.pdb'
 # launch the program, with all simulation parameters set to default values
 # you may need to "sudo" the following line if the docker group is not configured for the user
 ./ai2bmd --prot-file chig.pdb
