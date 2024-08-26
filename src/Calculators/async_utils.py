@@ -35,7 +35,21 @@ class SocketOps:
         buf.release()
 
     def send(self, buf):
-        self.connection.sendall(buf)
+        buf = memoryview(buf).cast('b')
+        sz = len(buf)
+        if sz <= 0:
+            return
+        try:
+            while True:
+                actual = self.connection.send(buf)
+                if actual == sz:
+                    break
+                if actual <= 0:
+                    raise AsyncUtilError("send failure")
+                sz -= actual
+                buf = buf[actual:]
+        finally:
+            buf.release()
 
     def send_object(self, obj):
         buf = pickle.dumps(obj)
