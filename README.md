@@ -14,14 +14,14 @@
 
 ## Overview
 
-AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains datasets, simulation programs, and public materials related to AI<sup>2</sup>BMD.
+AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains simulation programs, datasets, and public materials related to AI<sup>2</sup>BMD.
 
 <img src="https://github.com/microsoft/AI2BMD/blob/resources/images/ai2bmd_logo.png?raw=true" width=50%>
 
 ## AI<sup>2</sup>BMD Setup Guide
 
 The source code of AI<sup>2</sup>BMD is hosted in this repository. 
-To streamline the user experience, we package the source code and runtime libraries into a Docker image, and provide a Python launcher program to simplify the deployment process.
+We package the source code and runtime libraries into a Docker image, and provide a Python launcher program to simplify the setup process.
 To run the simulation program, you don't need to clone this repository. Simply download `scripts/ai2bmd` and launch it (Python >=3.7 is required).
 
 ```shell
@@ -76,14 +76,13 @@ wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/resources/samples/chig.
 ./ai2bmd --prot-file chig.pdb
 ```
 
-Here we use the Chignolin protein as an example.
+Here we use a very simple protein `Chignolin` as an example.
 The program will run a simulation with the default parameters.
 
 The results will be placed in a new directory `Logs-chig`.
 The directory contains the simulation trajectory file:
 
 - chig-traj.traj: The full trajectory file in ASE binary format.
-
 
 ## Datasets
 
@@ -103,7 +102,7 @@ When it finishes, the current working directory will be populated by the numpy d
 
 ### AIMD-Chig Dataset
 
-The whole comformation MD dataset for proteins calculated at Density Functional Theory (DFT) level. AIMD-Chig consists of 2M conformations of the 166-atom *Chignolin* and the corresponding potential energy and atomic forces calculated at M06-2X/6-31g* level.
+The AIMD-Chig consists of 2M conformations of the 166-atom *Chignolin* and their corresponding potential energy and atomic forces calculated using DFT (M06-2X/6-31g*) level.
 
 <!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/aimd-chig.png?raw=true" width=50%>-->
 
@@ -218,7 +217,7 @@ AI<sup>2</sup>BMD is a research project. It is not an officially supported Micro
 
 Please contact <A href="mailto:ai2bmd@microsoft.com">AI2BMD Team</A> for any questions or suggestions. The main team members include:
 
-- [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/) (Primary lead/contact)
+- [Tong Wang](https://www.microsoft.com/en-us/research/people/watong/) (Primary contact)
 - [Yatao Li](https://www.microsoft.com/en-us/research/people/yatli/)
 - [Ran Bi](https://www.microsoft.com/en-us/research/people/biran/)
 - [Bin Shao](https://www.binshao.info/)
