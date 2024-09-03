@@ -14,7 +14,7 @@
 
 ## Overview
 
-AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains simulation programs, datasets, and public materials related to AI<sup>2</sup>BMD.
+AI<sup>2</sup>BMD is a program for efficiently simulating protein molecular dynamics with *ab initio* accuracy. This repository contains the simulation program, datasets, and public materials related to AI<sup>2</sup>BMD.
 
 <img src="https://github.com/microsoft/AI2BMD/blob/resources/images/ai2bmd_logo.png?raw=true" width=50%>
 
@@ -102,7 +102,7 @@ When it finishes, the current working directory will be populated by the numpy d
 
 ### AIMD-Chig Dataset
 
-The AIMD-Chig consists of 2M conformations of the 166-atom *Chignolin* and their corresponding potential energy and atomic forces calculated using DFT (M06-2X/6-31g*) level.
+The AIMD-Chig dataset consists of 2 million conformations of the 166-atom `Chignolin`, along with their corresponding potential energy and atomic forces calculated using Density Functional Theory (DFT) at the M06-2X/6-31G* level.
 
 <!--<img src="https://github.com/microsoft/AI2BMD/blob/resources/images/aimd-chig.png?raw=true" width=50%>-->
 
