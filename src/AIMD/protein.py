@@ -154,7 +154,6 @@ class Protein(Atoms):
             [p for p in pairs if p not in self.exclude_pair],
             dtype=torch.long,
         ).t()
-        self.mm_adjmatrix = edge_index
         return edge_index
 
     def generate_nonbonded_params(self):

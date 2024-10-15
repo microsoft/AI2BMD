@@ -38,14 +38,11 @@ if __name__ == "__main__":
         log_dir=args.log_dir,
         temp_k=args.temp_k,
     )
-    (
-        preeq_top,
-        preeq_inpcrd,
-        preeq_pdb,
-        preeq_nowat_top,
-        preeq_nowat_pdb,
-        mm_input_file,
-    ) = preeq.run_preprocess()
+    if args.solvent_method == "AMOEBA":
+        (
+            preeq_pdb,
+            preeq_nowat_pdb,
+        ) = preeq.run_preprocess()
     os.chdir(args.base_dir)
 
     patch_check_state()

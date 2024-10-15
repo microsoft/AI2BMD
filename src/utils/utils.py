@@ -43,6 +43,67 @@ def fill_atom_symbol(atom_symbol: str) -> str:
     return ""
 
 
+def reorder_atoms(fpath: str):
+    r"""
+    Reorder atoms in .pdb output from tinker.
+    """
+    assert fpath.endswith(".pdb"), "Error: The file format is not PDB!"
+    with open(fpath, 'r') as f:
+        lines = f.readlines()
+
+    output = []
+    sidechain = []
+
+    res_id = None
+    res_count = 0
+    h_found = False
+
+    for l in lines:
+        cols = l.split()
+
+        if len(cols) < 8 or cols[0] != 'ATOM':
+            output.append(l)
+            continue
+
+        if cols[4] != res_id:
+            res_count = 0
+
+        # check if sidechain atoms should be written
+        if cols[2] == 'H' or cols[2] == 'HA':
+            res_count = 0
+            h_found = True
+        elif h_found is True:
+            # write sidechain atoms right after H/HA
+            output.extend(sidechain)
+            sidechain = []
+            h_found = False
+
+        # enumerate N/CA/C/O atoms
+        if res_count == 0 and cols[2] == 'N':
+            res_count += 1
+        elif res_count == 1 and cols[2] == 'CA':
+            res_count += 1
+        elif res_count == 2 and cols[2] == 'C':
+            res_count += 1
+        elif res_count == 3 and cols[2] == 'O':
+            res_count += 1
+        # save rows between N/CA/C/O and H/HA
+        elif res_count == 4:
+            sidechain.append(l)
+            res_id = cols[4]
+            continue
+
+        # save line to output
+        output.append(l)
+
+        # update current residue id
+        res_id = cols[4]
+
+    with open(fpath, 'w') as f:
+        for l in output:
+            f.write(l)
+
+
 def get_residue_name(prot: Atoms) -> List[str]:
     atom_resname: List[str] = prot.arrays["residuenames"].tolist()
     atom_resid: List[np.int64] = prot.arrays["residuenumbers"].tolist()

@@ -6,9 +6,8 @@ import sys
 from typing import List, Tuple
 
 from AIMD import arguments, envflags
-from utils.system import get_physical_core_count
-from utils.utils import record_time
 from Calculators.device_strategy import DeviceStrategy
+from utils.utils import record_time, reorder_atoms
 
 
 def run_command(command: str, cwd_path: str) -> None:
@@ -100,7 +99,7 @@ class Preprocess(object):
         residue_lines = lines[start:end]
         for line in residue_lines:
             for word in line.split():
-                if word.lower() not in {'na+','cl-','wat'}:
+                if word.lower() not in {'na', 'na+', 'cl', 'cl-', 'wat'}:
                     num_residue += 1
         self.num_residue = num_residue
         return num_residue
@@ -108,11 +107,10 @@ class Preprocess(object):
     def run_leap_mm(self) -> Tuple[str, str]:
         """
         Input: protein pdb
-        Output: {prot_name}1.top {prot_name}1.inpcrd
+        Output: (AMOEBA) {prot_name}-preeq.pdb {prot_name}-preeq-nowat.pdb
         By-products:
-            - t1.in t2.in 
-            - (AMOEBA) {prot_name}_amobea.pdb {prot_name}.key
-            - min1.in mm_a.in
+            - t1.in t2.in
+            - (AMOEBA) convert.in min1.key, min2.key
         """
         with open("t1.in", "w") as fleap:
             fleap.write(
@@ -176,327 +174,99 @@ class Preprocess(object):
                 )
         run_command_mamba("tleap -f t2.in", self.command_save_path, "ambertools")
         maxcyc = arguments.get().max_cyc
-        ncyc = maxcyc // 2
-        num_residue = self.count_residues(f"{self.prot_path}.top")
-        
+
         if self.solvent_method == "AMOEBA":
-            run_command_mamba(
-                f"ambpdb -p {self.prot_path}.top -c {self.prot_path}.inpcrd > {self.prot_path}_amobea.pdb",
-                self.command_save_path,
-                "ambertools"
-            )
-            with open("leap.log") as f:
-                text = f.read()
-            pme = None
-            for line in text.split("\n"):
-                if "Total vdw box size" in line:
-                    pme = round(
-                        1.5
-                        * max(
-                            float(line.split()[4]),
-                            float(line.split()[5]),
-                            float(line.split()[6]),
-                        )
-                    )
-                    break
-            if pme is None:
-                print("!!! pme is not extracted from log file")
-                sys.exit(-1)
-            for i in range(99999):
-                if (
-                    (pme + i) % 2 == 0
-                    and (pme + i) % 3 == 0
-                    and (pme + i) % 4 == 0
-                    and (pme + i) % 5 == 0
-                ):
-                    pme = pme + i
-                    break
-            with open(f"{self.prot_path}.key", "w") as f:
-                f.write(
-                    f"""#
-#  Keyfile for MD Benchmark on AMOEBA DHFR/Water Box
-#
+            if self.devices.startswith("cuda"):
+                self.amoeba_command_dir = '/usr/local/gpu-m'
+            else:
+                self.amoeba_command_dir = '/usr/local/cpu-m'
 
-parameters            {self.utils_dir}/amoebapro13
-#verbose
-randomseed            123456789
-neighbor-list
+            random_seed = 23
 
-#
-#  Define the Periodic Box and Cutoffs
-#
+            # generate pdb from top and inpcrd
+            with open("convert_pdb.in", "w") as fcpptraj:
+                fcpptraj.write("{}\n{}\n{}\n".format(
+                    "parm {}.top".format(self.prot_path),
+                    "trajin {}.inpcrd".format(self.prot_path),
+                    "trajout {}_tleap.pdb".format(self.prot_path)
+                ))
+            run_command_mamba("cpptraj -i convert_pdb.in", self.command_save_path, "ambertools")
 
-a-axis                {pme}
-b-axis                {pme}
-c-axis                {pme}
-vdw-cutoff            12.0
+            # get pbc and solute atom number
+            with open(f"{self.prot_path}_tleap.pdb") as f:
+                text = f.readlines()
+                head = text[0].split()
+                pbc_x = math.ceil(float(head[1]))
+                pbc_y = math.ceil(float(head[2]))
+                pbc_z = math.ceil(float(head[3]))
+                solute_atom_num = len([x for x in text if x.startswith("ATOM") and x[17:20].strip().lower() not in ["na", "na+", "cl", "cl-", "wat"]])
 
-#
-#  Set Parameters for Ewald Summation
-#
+            # convert pdb to tinker amoeba xyz
+            run_command(f"{self.amoeba_command_dir}/pdbxyz8 {self.prot_path}_tleap.pdb {self.utils_dir}/amoebabio18.prm", self.command_save_path)
 
-ewald
-ewald-cutoff          7.0
-pme-grid              {pme} {pme} {pme}
-fft-package           fftw
-polar-eps             0.01
+            # write key file for minimization 1
+            with open("min1.key", "w") as f:
+                f.write("{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format(
+                    f"parameters {self.utils_dir}/amoebabio18.prm",
+                    f"randomseed {random_seed}",
+                    f"a-axis {pbc_x}",
+                    f"b-axis {pbc_y}",
+                    f"c-axis {pbc_z}",
+                    "cutoff 12",
+                    "vdw-cutoff 12",
+                    f"restrain-position -1 {solute_atom_num} 1000.0 0.0",
+                    "ewald",
+                    "ewald-cutoff 7.0",
+                    "fft-package FFTW",
+                    "polarization mutual",
+                    "polar-eps 0.01",
+                    "minimize",
+                    f"maxiter {maxcyc}"
+                ))
 
-"""
-                )
-            with open("min1.in", "w") as fmin:
-                fmin.write(
-                    "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format(
-                        "Energy minimization",
-                        "&cntrl",
-                        " imin=1, !minimize the initial struc",
-                        f" maxcyc={maxcyc}, !maximum number of cycles for minimization",
-                        f" ncyc={ncyc}, !switch from steepest descent to conjugate",
-                        " ntpr=1, ntwr=1,",
-                        " ntb=1, !  Constant volume",
-                        " ntp=0, !  No pressure scaling",
-                        " ntf=1, ! complete force evaluation",
-                        " ntc=1, ! No SHAKE",
-                        " jfastw=4,  iamoeba=1,",
-                        " /",
-                        " ",
-                        " &ewald",
-                        f" nfft1={pme},nfft2={pme},nfft3={pme},",
-                        "  skinnb=2.,nbtell=0,order=5,ew_coeff=0.5446",
-                        " /",
-                        " &amoeba",
-                        "   dipole_scf_tol = 0.001,dipole_scf_iter_max=100,",
-                        "   sor_coefficient=0.61,ee_damped_cut=4.5,ee_dsum_cut=6.7,",
-                        " /",
-                    )
-                )
+            run_command(f"{self.amoeba_command_dir}/minimize9 {self.prot_path}_tleap.xyz 0.1 -k min1.key", self.command_save_path)
 
-            with open("mm_a.in", "w") as f:
-                f.write(
-                    f"""zero step md to get energy and force
-&cntrl
-imin=0, nstlim=0,  ntx=1,
-cut=10, ntb=1,  dt=0.001,
-ntpr=1,ntwe=1,ntwx=1,ntwf=1,
-jfastw=4,  iamoeba=1,
-/
-&ewald
-nfft1={pme},nfft2={pme},nfft3={pme},
-skinnb=2.,nbtell=0,order=5,ew_coeff=0.5446,
-/
-&amoeba
-dipole_scf_tol = 0.001,dipole_scf_iter_max=100,
-sor_coefficient=0.61,ee_damped_cut=4.5,ee_dsum_cut=6.7,
-/
+            # write key file for minimization 2
+            with open("min2.key", "w") as f:
+                f.write("{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format(
+                    f"parameters {self.utils_dir}/amoebabio18.prm",
+                    f"randomseed {random_seed}",
+                    f"a-axis {pbc_x}",
+                    f"b-axis {pbc_y}",
+                    f"c-axis {pbc_z}",
+                    f"cutoff 12",
+                    f"vdw-cutoff 12",
+                    "ewald",
+                    "ewald-cutoff 7.0",
+                    "fft-package FFTW",
+                    "polarization mutual",
+                    "polar-eps 0.01",
+                    "minimize",
+                    f"maxiter {maxcyc}"
+                ))
 
-            """
-                )
-            run_command(f"cp {self.prot_path}_amobea.pdb test.pdb ", self.command_save_path)
-            run_command(f"cp {self.prot_path}.key test.key", self.command_save_path)
-            run_command(f"cp {self.prot_path}.top test.prmtop ", self.command_save_path)
+            run_command(f"{self.amoeba_command_dir}/minimize9 {self.prot_path}_tleap.xyz_2 0.1 -k min2.key", self.command_save_path)
 
-            run_command(
-                """awk '{ if($0 ~ /Na\+/) { gsub(/Na\+/, " NA", $0); gsub(/Na\+/, " NA", $0); gsub(/ATOM  /, "HETATM", $0); } print $0; }' test.pdb > test1.pdb""",
-                self.command_save_path,
-            )
-            run_command(
-                """awk '{ if($0 ~ /Cl\-/) { gsub(/Cl\-/, " CL", $0); gsub(/Cl\-/, " Cl", $0); gsub(/ATOM  /, "HETATM", $0); } print $0; }' test1.pdb > test2.pdb""",
-                self.command_save_path,
-            )
-            run_command("mv test2.pdb test.pdb", self.command_save_path)
-            run_command(
-                f"""pdbxyz test << _EOF
-{os.getcwd()}/test.key
-_EOF""",
-                self.command_save_path,
-            )
+            # convert xyz to pdb
+            run_command(f"{self.amoeba_command_dir}/xyzpdb8 {self.prot_path}_tleap.xyz_3 {self.utils_dir}/amoebabio18.prm", self.command_save_path)
+            run_command(f"cp {self.prot_path}_tleap.pdb_2 {self.prot_path}-preeq.pdb", self.command_save_path)
 
-            run_command(
-                "analyze test PC > test.analout", self.command_save_path
-            )
-            run_command(
-                "sed -i 's/Atom Type Definition Parameters/Atom Definition Parameters/g' test.analout",
-                self.command_save_path,
-            )
-            run_command(
-                "rm -rf test_tinker2amber.top test_tinker2amber.crd ",
-                self.command_save_path,
-            )
-            run_command(
-                """tinker_to_amber  -key test.key << _EOF
-test.analout
-test.xyz
-test.pdb
-test
-test_tinker2amber.top
-test_tinker2amber.crd
-_EOF""",
-                self.command_save_path,
-            )
-            run_command(
-                f"cp test_tinker2amber.top {self.prot_path}.top", self.command_save_path
-            )
-            run_command(
-                f"cp test_tinker2amber.crd {self.prot_path}.inpcrd", self.command_save_path
-            )
-            run_command_mamba(
-                "ambpdb -p test_tinker2amber.top -c test_tinker2amber.crd > test_after.pdb",
-                self.command_save_path,
-                "ambertools"
-            )
-            return f"{self.prot_path}.top",f"{self.prot_path}.inpcrd"
+            # get solute only pdb， remove water and ions
+            with open(f"{self.prot_path}-preeq.pdb") as f:
+                text = f.readlines()
+                with open(f"{self.prot_path}-preeq-nowat.pdb", "w") as fsolute:
+                    atom_begidx = 0
+                    for line in text:
+                        if line.startswith("ATOM") or line.startswith("HETATM"):
+                            break
+                        else:
+                            atom_begidx += 1
+                    fsolute.write("".join(text[:atom_begidx]))
+                    fsolute.write("".join([x for x in text if (x.startswith("ATOM") or x.startswith('HETATM')) and x[17:20].strip().lower() not in ["na", "na+", "cl", "cl-", "wat", "hoh"]]))
+            return f"{self.prot_path}-preeq.pdb", f"{self.prot_path}-preeq-nowat.pdb"
         else:
             raise ValueError(f"Unrecognized solvent method: {self.solvent_method}")
 
-    def run_emin_mm(self) -> str:
-        """Run minimization with sander (AMBER), use this when there's no pre-equilibration with sander
-        Input:  min1.in
-        Output: preeq.rst
-        By-products: min.out
-        """
-        run_command_mamba(
-            "sander -O -i min1.in -p {0}.top -c {0}.inpcrd -o min.out "
-            "-r preeq.rst -ref {0}.inpcrd".format(self.prot_path),
-            self.command_save_path,
-            "ambertools"
-        )
-        return f"{self.prot_path}.inpcrd"
-
-    def generate_pdb_after_min(self) -> str:
-        """Use cpptraj to convert sander output to pdb.
-        Input: {prot_name}.top preeq.rst
-        Output: {prot_name}-preeq.pdb
-        """
-        preeq_pdb = f"{self.prot_path}-preeq.pdb"
-        with open("gene_pdb_from_rst.in", "w") as frst:
-            frst.write(
-                "{}\n{}\n{}\n".format(
-                    "parm {}.top".format(self.prot_path),
-                    "trajin preeq.rst",
-                    "trajout {}".format(preeq_pdb),
-                )
-            )
-
-        run_command_mamba("cpptraj -i gene_pdb_from_rst.in", self.command_save_path, "ambertools")
-
-        return preeq_pdb
-
-    def minimize1(self) -> None:
-        """Sander minimization step 1.
-        Input: min1.in {prot_name}.top {prot_name}.inpcrd
-        Output: min1.rst
-        By-products: min1.out
-        """
-        run_command_mamba(
-            "sander -O -i min1.in -p {0}.top -c {0}.inpcrd -o min1.out -inf min1.info "
-            "-r min1.rst -x min1.mdcrd -ref {0}.inpcrd".format(self.prot_path),
-            self.command_save_path,
-            "ambertools"
-        )
-        
-    def minimize2(self) -> None:
-        """Sander minimization step 2.
-        Input: min1.rst {prot_name}.top {prot_name}.inpcrd
-        Output: min2.rst
-        By-products: min2.in min2.out
-        """
-        maxcyc = arguments.get().max_cyc
-        ncyc = maxcyc // 2
-        data = f"""Min2
-                &cntrl
-                imin=1,
-                maxcyc={maxcyc},
-                ncyc={ncyc},
-                iwrap=1,
-                ntb= 1,
-                cut=10
-                /
-                """
-        with open("min2.in", "w") as f:
-            f.write(data)
-        run_command_mamba(
-            "sander -O -i min2.in -p {0}.top -c min1.rst -o min2.out -inf min2.info "
-            "-r min2.rst -x min2.mdcrd -ref min1.rst".format(self.prot_path),
-            self.command_save_path,
-            "ambertools"
-        )
-
-
-
-    def generate_xyz_from_min(self) -> str:
-        preeq_min_xyz = f"{self.prot_path}-preeq.xyz"
-        with open("xyz.in", "w") as fxyz:
-            fxyz.write(
-                "{}\n{}\n{}\n{}".format(
-                    "parm {}.top".format(self.prot_path),
-                    "trajin preeq.rst",
-                    "trajout {} ftype xyz prec 8".format(preeq_min_xyz),
-                    "go",
-                )
-            )
-
-        run_command_mamba("cpptraj -i xyz.in", self.command_save_path, "ambertools")
-        return preeq_min_xyz
-
-
-    def strip_wat(self, preeq_pdb) -> Tuple[str, str]:
-        """Obtain 'nowat' pdb and topology files
-        Input: {prot_name}-preeq.pdb
-        Output: {prot_name}-preeq-nowat.pdb {prot_name}-preeq-nowat.top
-        """
-
-        preeq_nowat_top = f"{self.prot_path}-preeq-nowat.top"
-        preeq_nowat_pdb = f"{self.prot_path}-preeq-nowat.pdb"
-
-        with open("strip_wat_pdb.in", "w") as fwt:
-            fwt.write(
-                "{}\n{}\n{}\n{}\n".format(
-                    "parm {}.top".format(self.prot_path),
-                    "trajin {}".format(preeq_pdb),
-                    "strip :WAT,Cl-,Na+,CL,NA",
-                    "trajout {}".format(preeq_nowat_pdb),
-                )
-            )
-
-        run_command_mamba("cpptraj -i strip_wat_pdb.in", self.command_save_path, "ambertools")
-        if self.solvent_method == "AMOEBA":
-            run_command(f"sed -i '/^TER/d' {preeq_nowat_pdb} ", self.command_save_path)
-            run_command(f"cp {preeq_nowat_pdb} test1.pdb", self.command_save_path)
-            run_command("cp test.key test1.key", self.command_save_path)
-            run_command(
-                f"""pdbxyz test1 << _EOF
-{os.getcwd()}/test1.key
-_EOF""",
-                self.command_save_path,
-            )
-            run_command(
-                "analyze test1 PC > test1.analout", self.command_save_path
-            )
-            run_command(
-                "sed -i 's/Atom Type Definition Parameters/Atom Definition Parameters/g' test1.analout",
-                self.command_save_path,
-            )
-            run_command(
-                "rm -rf test1_tinker2amber.top test1_tinker2amber.crd ",
-                self.command_save_path,
-            )
-            run_command(
-                """tinker_to_amber  -key test1.key << _EOF
-test1.analout
-test1.xyz
-test1.pdb
-test1
-test1_tinker2amber.top
-test1_tinker2amber.crd
-_EOF""",
-                self.command_save_path,
-            )
-            run_command(
-                f"cp test1_tinker2amber.top {preeq_nowat_top}", self.command_save_path
-            )
-        else:
-            raise ValueError(f"Unrecognized solvent method: {self.solvent_method}")
-
-        return preeq_nowat_top, preeq_nowat_pdb
 
     def organize_files(self, file_list: List[str], solvent_method: str) -> List[str]:
         r"""
@@ -522,61 +292,38 @@ _EOF""",
             os.path.dirname(self.prot_path),
             f"{os.path.basename(self.prot_path)}_mm",
         )
-            
+
         if os.path.exists(mm_path) and os.listdir(mm_path):
-            preeq_top = os.path.join(
-                mm_path, f"{os.path.basename(self.prot_path)}.top"
-            )
-            preeq_inpcrd = os.path.join(
-                mm_path, f"{os.path.basename(self.prot_path)}.inpcrd"
-            )
             preeq_pdb = os.path.join(
                 mm_path, f"{os.path.basename(self.prot_path)}-preeq.pdb"
-            )
-            preeq_nowat_top = os.path.join(
-                mm_path, f"{os.path.basename(self.prot_path)}-preeq-nowat.top"
             )
             preeq_nowat_pdb = os.path.join(
                 mm_path, f"{os.path.basename(self.prot_path)}-preeq-nowat.pdb"
             )
-            mm_a = os.path.join(mm_path, "mm_a.in")
-            if {
-                preeq_top,
-                preeq_inpcrd,
-                preeq_pdb,
-                preeq_nowat_top,
-                preeq_nowat_pdb,
-                mm_a,
-            } != set([os.path.join(mm_path, p) for p in os.listdir(mm_path)]):
-                exist = set(
-                    [
-                        os.path.join(os.path.dirname(mm_path), p)
-                        for p in os.listdir(mm_path)
-                    ]
-                )
-                print(f"existing files: {exist}")
+
+            if solvent_method == 'AMOEBA':
+                exist = {
+                    os.path.join(mm_path, p)
+                    for p in os.listdir(mm_path)
+                }
                 expect = {
-                    preeq_top,
-                    preeq_inpcrd,
                     preeq_pdb,
-                    preeq_nowat_top,
                     preeq_nowat_pdb,
                 }
-                print(f"expected files: {expect}")
-                print(
-                    "Some files missing, delete this folder and "
-                    "rerun the preprocessing step..."
+                if exist != expect:
+                    print(f"existing files: {exist}")
+                    print(f"expected files: {expect}")
+                    print(
+                        "Some files missing, delete this folder and "
+                        "rerun the preprocessing step..."
+                    )
+                    shutil.rmtree(mm_path)
+                    return False
+                return (preeq_pdb,
+                        preeq_nowat_pdb,
                 )
-                shutil.rmtree(mm_path)
-                return False
-            return (
-                preeq_top,
-                preeq_inpcrd,
-                preeq_pdb,
-                preeq_nowat_top,
-                preeq_nowat_pdb,
-                mm_a,
-            )
+            else:
+                raise ValueError(f"Unrecognized solvent method: {solvent_method}")
         else:
             return False
 
@@ -590,25 +337,20 @@ _EOF""",
         if out:
             print("Preprocessing step already done, skip...")
             return list(out)
-        # generate the topology file
-        preeq_top, preeq_inpcrd = self.run_leap_mm()
-        # run minimize & preeq 
+
         if self.solvent_method == 'AMOEBA':
-            preeq_inpcrd = self.run_emin_mm()
+            preeq_pdb, preeq_nowat_pdb = self.run_leap_mm()
+
+            reorder_atoms(preeq_pdb)
+            reorder_atoms(preeq_nowat_pdb)
+
+            return self.organize_files(
+                [
+                    preeq_pdb,
+                    preeq_nowat_pdb,
+                ],
+                self.solvent_method,
+            )
         else:
             print('solvent method not supported')
             sys.exit(-1)
-        preeq_pdb = self.generate_pdb_after_min()
-        preeq_nowat_top, preeq_nowat_pdb = self.strip_wat(preeq_pdb)
-        mm_in = self.command_save_path + "/" + "mm_a.in"
-        # collect the generated files
-        return self.organize_files(
-            [
-                preeq_top,
-                preeq_inpcrd,
-                preeq_pdb,
-                preeq_nowat_top,
-                preeq_nowat_pdb,
-                mm_in,
-            ],self.solvent_method
-        )
