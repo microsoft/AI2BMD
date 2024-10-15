@@ -251,7 +251,7 @@ class MDObserver:
             epot = self.a.get_potential_energy().item()
             ekin = self.a.get_kinetic_energy().item()
             temperature = self.a.get_temperature()
-            if temperature > 1.5*self.temp_k:
+            if temperature > 1.5 * self.temp_k:
                 raise TemperatureRunawayError(temperature, "temperature runaway")
             if self.prev_step_time is None:
                 steptime = ""
@@ -263,9 +263,8 @@ class MDObserver:
                 frag_steptime = f"  fragtime = {_fragment_step_time * 1000:.1f}ms"
             self.prev_step_time = cur_time
             print(f"Step {self.get_md_step():d}: "
-                  f"Epot = {epot:.3f}eV  "
+                  f"Epot = {epot:.3f}eV "
                   f"Ekin = {ekin:.3f}eV "
-                  f"(T = {temperature:3.0f}K) "
                   f"Etot = {epot+ekin:.3f}eV"
                   f"{steptime}"
                   f"{frag_steptime}")
