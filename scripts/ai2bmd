@@ -33,6 +33,12 @@ def parse_args(argv):
         help="A directory for saving results",
     )
     parser.add_argument(
+        "--src-dir",
+        type=str,
+        default=None,
+        help="Use source code from local directory",
+    )
+    parser.add_argument(
         "--ckpt-path",
         type=str,
         default=osp.join(_src_dir, "ViSNet/checkpoints"),
@@ -354,6 +360,13 @@ def main() -> None:
         if not subdir:
             mount_opts.append('-v')
             mount_opts.append(f'{mp}:/mnt{mp}')
+
+    # 2e. local src dir
+    remove_argv(argv, "--src-dir", 2)
+    if args.src_dir is not None:
+        src_dir = osp.abspath(args.src_dir)
+        mount_opts.append('-v')
+        mount_opts.append(f'{src_dir}:/ai2bmd')
 
     # 3. GPU option
     remove_argv(argv, "--gpus", 2)
