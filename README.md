@@ -34,22 +34,23 @@ chmod +x ai2bmd
 # Notable optional arguments:
 #
 # [Simulation directory mapping options]
-#   --base-dir path/to/base-dir    A directory for running simulation (defaults to current directory)
-#   --log-dir  path/to/log-dir     A directory for saving results (defaults to base-dir/Logs-protein-name)
+#   --base-dir path/to/base-dir    Directory for running simulation (default: current directory)
+#   --log-dir  path/to/log-dir     Directory for logs, results (default: base-dir/Logs-protein-name)
+#   --src-dir  path/to/src-dir     Mount src-dir in place of src/ from this repository (default: not used)
 #
 # [Simulation parameter options]
 #   --sim-steps nnn                Simulation steps
 #   --temp-k nnn                   Simulation temperature in Kelvin
-#   --timestep nnn                 TimeStep (fs) for simulation
+#   --timestep nnn                 Time-step (fs) for simulation
 #   --preeq-steps nnn              Pre-equilibration simulation steps for each constraint
 #   --max-cyc nnn                  Maximum energy minimization cycles in preprocessing
 #
 # [Performance tweaks]
 #   --device-strategy [strategy]   The compute device allocation strategy
-#       small-molecule             Bonded/non-bonded/solvent computation share all GPUs, enable GPU oversubscription
-#       large-molecule             No multiple models on the same GPU
-#   --chunk-size nnn               When there's more than device_chunk elements (e.g. dipeptides) in a batch, split them into chunks
-#                                  and feed them into GPUs sequentially. Reduces memory consumption
+#       excess-compute                 Reserves last GPU for non-bonded/solvent computation
+#       small-molecule                 Maximize resources for model inference
+#       large-molecule                 Improve performance for large molecules
+#   --chunk-size nnn               Number of atoms in each batch (reduces memory consumption)
 #
 # [Additional launcher options]
 #   --software-update              When specified, updates the program in the Docker image before running
