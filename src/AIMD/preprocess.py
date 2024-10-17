@@ -26,23 +26,24 @@ def run_command(command: str, cwd_path: str) -> None:
         executable="/bin/bash",
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        text=True,
     )
-    errorcode = proc.wait()
-    if errorcode:
+    out, err = proc.communicate()
+    if proc.returncode:
         path = cwd_path
         msg = (
             'Failed with command "{}" failed in '
             ""
             "{} with error code {}"
             "stdout: {}"
-            "stderr: {}".format(command, path, errorcode, proc.stdout.read().decode(), proc.stderr.read().decode())
+            "stderr: {}".format(command, path, proc.returncode, out, err)
         )
         raise ValueError(msg)
     elif envflags.DEBUG_RC:
         print('-------------- stdout -----------------')
-        print(proc.stdout.read().decode())
+        print(out)
         print('-------------- stderr -----------------')
-        print(proc.stderr.read().decode())
+        print(err)
 
 
 def run_command_mamba(command: str, cwd_path: str, mamba_env: str) -> None:
