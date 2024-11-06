@@ -41,6 +41,8 @@ wget 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/examples/chig.pdb'
 # download the preprocessed and solvated Chignolin protein structure data files
 wget --directory-prefix=chig_preprocessed 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/examples/chig_preprocessed/chig-preeq.pdb'
 wget --directory-prefix=chig_preprocessed 'https://raw.githubusercontent.com/microsoft/AI2BMD/main/examples/chig_preprocessed/chig-preeq-nowat.pdb'
+# pull the docker image from the container registry
+docker pull ghcr.io/microsoft/ai2bmd:latest
 # launch the program, with all simulation parameters set to default values
 # you may need to "sudo" the following line if the docker group is not configured for the user
 ./ai2bmd --prot-file chig.pdb --preprocess-dir chig_preprocessed --preeq-steps 0 --sim-steps 1000 --record-per-steps 1
