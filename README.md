@@ -32,6 +32,8 @@ pip install pytorch-lightning==1.8.0
 pip install ase ase[test] ogb
 ```
 
+Note: newer versions of `pip` may have issues with `pytorch-lightning`'s metadata format. If you encounter this issue, downgrade the version of `pip` that's embedded in the `visnet` environment, by running `pip install pip==24.0` from the activated environment (i.e. after `conda activate visnet`).
+
 ## Getting started
 
 To train ViSNet on MD17, just run:
