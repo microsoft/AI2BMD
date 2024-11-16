@@ -23,16 +23,22 @@ ViSNet (shorted for “**V**ector-**S**calar **i**nteractive graph neural **Net*
 
 - Install the dependencies
 
-```shell
-conda create -y -n visnet python=3.9
-conda activate visnet
-conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
-conda install pyg==2.1.0 -c pyg
-pip install pytorch-lightning==1.8.0
-pip install ase ase[test] ogb
-```
+   ```shell
+   conda create -y -n visnet python=3.9
+   conda activate visnet
+   conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
+   conda install pyg==2.1.0 -c pyg
+   pip install pytorch-lightning==1.8.0  # see the note below
+   pip install ase ase[test] ogb
+   ```
 
-Note: newer versions of `pip` may have issues with `pytorch-lightning`'s metadata format. If you encounter this issue, downgrade the version of `pip` that's embedded in the `visnet` environment, by running `pip install pip==24.0` from the activated environment (i.e. after `conda activate visnet`).
+- Note: newer versions of `pip` won't parse the metadata from `pytorch-lightning`'s distribution. If you encounter this issue, downgrade `pip` for this environment, by running:
+
+  ```shell
+  pip install pip==24.0
+  ```
+
+  from the activated environment (i.e. after `conda activate visnet`), then run the `pip install` commands again.
 
 ## Getting started
 
