@@ -36,7 +36,7 @@ class MMNonBondedCalculator:
         force. Non-bonded forces are calculated by calculating the gradient of
         the non-bonded energy with respect to the atom positions.
         """
-        pos = torch.FloatTensor(prot.get_positions()).to(self.device)
+        pos = torch.tensor(prot.get_positions(), dtype=torch.float, device=self.device)
 
         vec = pos[self.dst] - pos[self.src]
         d2 = (vec**2).sum(-1)

@@ -131,9 +131,9 @@ class PMENonBondedCalculator:
 
     def set_parameters(self, prot: Protein) -> None:
         # Initialize parameters
-        sigmas = torch.FloatTensor(prot.sigmas)
-        epsilons = torch.FloatTensor(prot.epsilons)
-        charges = torch.FloatTensor(prot.charges)
+        sigmas = torch.tensor(prot.sigmas, dtype=torch.float)
+        epsilons = torch.tensor(prot.epsilons, dtype=torch.float)
+        charges = torch.tensor(prot.charges, dtype=torch.float)
         self.sigmas = sigmas.to(self.device)
         self.epsilons = epsilons.to(self.device)
         self.charges = charges.to(self.device)
@@ -159,7 +159,7 @@ class PMENonBondedCalculator:
         Non-bonded forces are calculated by grading the non-bonded energy
         with respect of the atom positions.
         """
-        pos_cpu = torch.FloatTensor(prot.get_positions())
+        pos_cpu = torch.tensor(prot.get_positions(), dtype=torch.float)
         pos = pos_cpu.to(self.device)
         src, dst = radius_graph(
             pos, self.cutoff, max_num_neighbors=len(pos), loop=False

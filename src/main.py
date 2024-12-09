@@ -1,11 +1,10 @@
 import logging
 import os
 import time
-import warnings
 
 import torch.multiprocessing as mp
 
-from AIMD import arguments, envflags
+from AIMD import arguments
 from AIMD.preprocess import Preprocess
 from AIMD.protein import Protein
 from AIMD.simulator import SolventSimulator, NoSolventSimulator
@@ -18,11 +17,12 @@ if __name__ == "__main__":
     mp.set_start_method("spawn")
 
     args = arguments.init()
-    if not envflags.DEBUG_RC:
-        warnings.filterwarnings("ignore")
-        logging.disable(logging.WARNING)
-    else:
+    if args.verbose >= 2:
         logging.basicConfig(level=logging.DEBUG)
+    elif args.verbose >= 1:
+        logging.basicConfig(level=logging.INFO)
+    else:
+        logging.basicConfig(level=logging.ERROR)
 
     logfile = os.path.join(args.log_dir, f"main-{time.strftime('%Y%m%d-%H%M%S')}.log")
     redir_output(logfile)

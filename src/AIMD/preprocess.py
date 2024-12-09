@@ -5,7 +5,7 @@ import subprocess
 import sys
 from typing import List, Tuple
 
-from AIMD import arguments, envflags
+from AIMD import arguments
 from Calculators.device_strategy import DeviceStrategy
 from utils.pdb import reorder_atoms, standardise_pdb, translate_coord_pdb, reorder_coord_amber2tinker
 from utils.system import get_physical_core_count
@@ -18,7 +18,7 @@ def run_command(command: str, cwd_path: str) -> None:
     It is more safe than os.system.
     """
 
-    if envflags.DEBUG_RC:
+    if arguments.get().verbose >= 4:
         print("run_command: ", command)
 
     proc = subprocess.Popen(
@@ -37,11 +37,13 @@ def run_command(command: str, cwd_path: str) -> None:
             'Failed with command "{}" failed in '
             ""
             "{} with error code {}"
-            "stdout: {}"
-            "stderr: {}".format(command, path, proc.returncode, out, err)
+            "stdout:"
+            "{}"
+            "stderr:"
+            "{}".format(command, path, proc.returncode, out, err)
         )
         raise ValueError(msg)
-    elif envflags.DEBUG_RC:
+    elif arguments.get().verbose >= 4:
         print('-------------- stdout -----------------')
         print(out)
         print('-------------- stderr -----------------')

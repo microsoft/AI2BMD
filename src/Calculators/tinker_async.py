@@ -9,7 +9,7 @@ from ase import Atoms
 from ase.calculators.calculator import Calculator
 from ase.units import kcal, mol
 
-from AIMD import envflags
+from AIMD import arguments
 from AIMD.preprocess import run_command
 from Calculators.async_utils import AsyncServer
 
@@ -33,12 +33,13 @@ class TinkerAsyncCalculator(Calculator):
         self.devices = devices
         self._tinker_proc = None
         self.atoms: Atoms
-        self.server = AsyncServer("tinker")
-        self.logger = getLogger("Tinker-Proxy")
 
         global _tinker_instance_id
         self.instance_id = _tinker_instance_id
         _tinker_instance_id += 1
+
+        self.server = AsyncServer("tinker")
+        self.logger = getLogger(f"Tinker-Proxy-{self.instance_id}")
 
         if any(map(lambda x: x.startswith('cuda'), devices)):
             self.command_dir = '/usr/local/gpu-m'
@@ -67,18 +68,15 @@ class TinkerAsyncCalculator(Calculator):
         elif len(gpus) == 1:
             envs["CUDA_VISIBLE_DEVICES"] = gpus[0]
 
-        outfd = None
-        stderrfd = open(os.devnull, 'wb')
-        log_args = "<< _EOF\n" if envflags.DEBUG_RC else f" > dynamic{self.instance_id}.log << _EOF\n"
+        outfd = None if arguments.get().verbose >= 3 else subprocess.DEVNULL
         self._tinker_proc = subprocess.Popen(
-            f"{self.command_dir}/tinker9 ai2bmd {self.prot_name} -k {self.prot_name} "
-            f"{log_args}"
+            f"{self.command_dir}/tinker9 ai2bmd {self.prot_name} -k {self.prot_name} << _EOF\n"
             f"{self.server.socket_path}\n"  # unix socket for IPC
             f"_EOF",
             shell=True,
             env=envs,
             stdout=outfd,
-            stderr=stderrfd,
+            stderr=outfd,
         )
         self.logger.debug('Waiting for Tinker to start...')
         self.server.accept()

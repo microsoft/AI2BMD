@@ -13,7 +13,7 @@ from ase.md.md import MolecularDynamics
 from ase.md.nvtberendsen import NVTBerendsen
 from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
 
-from AIMD import arguments, envflags
+from AIMD import arguments
 from AIMD.protein import Protein
 from Calculators.device_strategy import DeviceStrategy
 from Calculators.fragment import FragmentCalculator
@@ -200,8 +200,7 @@ class BaseSimulator(ABC):
         if build_frames and not restart:
             self.build_frames_from_traj(prot_name, record_per_steps, MolDyn.nsteps)
 
-        if not envflags.DEBUG_RC:
-            shutil.rmtree(os.path.join(self.log_path, "SimulationResults"))
+        shutil.rmtree(os.path.join(self.log_path, "SimulationResults"))
 
     def build_frames_from_traj(self, prot_name, record_per_steps, nsteps):
         print("Building frames from trajectory...")

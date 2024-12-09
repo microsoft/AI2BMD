@@ -9,10 +9,9 @@ from typing import Union
 
 import numpy as np
 import torch
-import torch.multiprocessing as mp
 from ase.calculators.calculator import Calculator
 
-from AIMD import envflags
+from AIMD import arguments
 from AIMD.fragment import FragmentData
 from Calculators.device_strategy import DeviceStrategy
 from Calculators.async_utils import AsyncServer, AsyncClient
@@ -69,7 +68,6 @@ class ViSNetModel:
             raise ValueError("model_path must be provided")
 
         model_path = kwargs["model_path"]
-
         device = kwargs.get("device", "cpu")
 
         model = load_model(model_path)
@@ -87,7 +85,7 @@ class ViSNetAsyncModel:
         self.logger = getLogger("ViSNet-Proxy")
         envs = os.environ.copy()
         envs["PYTHONPATH"] = f"{osp.abspath(osp.join(osp.dirname(__file__), '..'))}:{envs['PYTHONPATH']}"
-        outfd = subprocess.PIPE if not envflags.DEBUG_RC else None
+        outfd = None if arguments.get().verbose >= 3 else subprocess.DEVNULL
         # use __file__ as process so that viztracer-patched subprocess doesn't track us
         # this file should have chmod +x
         self.proc = subprocess.Popen(
@@ -158,18 +156,11 @@ class ViSNetCalculator(Calculator):
 
 
 if __name__ == "__main__":
-    mp.set_sharing_strategy("file_system")
-    mp.set_start_method("spawn")
-
     parser = argparse.ArgumentParser("ViSNet proxy")
     parser.add_argument("--model-path", type=str, required=True)
     parser.add_argument("--device", type=str, required=True)
     parser.add_argument("--socket-path", type=str, required=True)
     args = parser.parse_args()
-
-    logger = getLogger("AI2BMD-ViSNet-Worker")
-    logger.info(f'model-path: {args.model_path}')
-    logger.info(f'device: {args.device}')
 
     kwargs = {
         'model_path': args.model_path,
@@ -178,7 +169,6 @@ if __name__ == "__main__":
     calculator = ViSNetModel.from_file(**kwargs)
     client = AsyncClient(args.socket_path)
     # start serving
-    logger.info('Start serving.')
     try:
         while True:
             data: FragmentData = client.recv_object()
@@ -189,6 +179,7 @@ if __name__ == "__main__":
 
 ViSNetModelLike = Union[ViSNetModel, ViSNetAsyncModel]
 _local_calc: dict[str, ViSNetModel] = {}
+
 
 def get_visnet_model(model_path: str, device: str):
     # allow up to 1 copy of GPU model to run in the master process

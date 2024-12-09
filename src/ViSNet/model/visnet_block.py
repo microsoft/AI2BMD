@@ -2,7 +2,7 @@ from typing import Optional, Tuple
 
 import torch
 import torch.nn as nn
-from torch import IntTensor, Tensor
+from torch import Tensor
 from torch_geometric.nn import MessagePassing
 from torch_scatter import scatter
 
@@ -102,9 +102,9 @@ class ViSNetBlock(nn.Module):
 
     def forward(self, data: dict[str, Tensor]) -> Tuple[Tensor, Tensor]:
         # z, pos, batch = data['z'], data['pos'], data['batch']
-        z: IntTensor = data['z']
+        z: Tensor = data['z']
         pos: Tensor = data['pos']
-        batch: IntTensor = data['batch']
+        batch: Tensor = data['batch']
 
         # Embedding Layers
         x = self.embedding(z)
