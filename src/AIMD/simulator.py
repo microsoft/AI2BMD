@@ -124,6 +124,7 @@ class BaseSimulator(ABC):
 
         observer = MDObserver(
             a=self.prot,
+            q=self.qmatoms,
             md=MolDyn,
             traj=moldyn_traj,
             rng=rng_pool,

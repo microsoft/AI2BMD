@@ -116,6 +116,17 @@ def parse_args(argv):
         help="Do not use solvent",
     )
     parser.add_argument(
+        "--write-solvent",
+        action='store_true',
+        help="Write coordinates of solvent atoms in output",
+    )
+    parser.add_argument(
+        "--no-write-solvent",
+        action='store_false',
+        dest='write_solvent',
+        help="Do not write coordinates of solvent atoms in output",
+    )
+    parser.add_argument(
         "--preprocess-method",
         type=str,
         default="FF19SB",

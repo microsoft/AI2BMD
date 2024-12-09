@@ -11,6 +11,8 @@ from ase import Atoms
 from ase.io.trajectory import TrajectoryWriter
 from ase.md.md import MolecularDynamics
 
+from AIMD import arguments
+
 
 def record_time(func):
     def wrapper(*args, **kwargs):
@@ -115,8 +117,9 @@ class MDObserver:
     MolecularDynamics object, notified at every step.
     """
 
-    def __init__(self, a: Atoms, md: MolecularDynamics, traj: TrajectoryWriter, rng: RNGPool, step_offset: int, temp_k: int):
+    def __init__(self, a: Atoms, q: Atoms, md: MolecularDynamics, traj: TrajectoryWriter, rng: RNGPool, step_offset: int, temp_k: int):
         self.a = a
+        self.q = q
         self.md = md
         self.traj = traj
         self.rng = rng
@@ -124,11 +127,13 @@ class MDObserver:
         self.copy = None
         self.temp_k = temp_k
 
+        self.atoms = a if arguments.get().write_solvent else q
+
     def get_md_step(self):
         return self.step_offset + self.md.nsteps
 
     def save_traj_copy(self):
-        self.copy = self.a.copy()
+        self.copy = self.atoms.copy()
 
     @delay_work
     def write_traj(self):

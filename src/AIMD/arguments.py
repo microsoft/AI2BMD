@@ -100,6 +100,12 @@ def init(argv=None):
         help="Use solvent or not",
     )
     parser.add_argument(
+        "--write-solvent",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Write coordinates of solvent atoms in output",
+    )
+    parser.add_argument(
         "--preprocess-method",
         type=str,
         default="FF19SB",
