@@ -80,9 +80,8 @@ class AsyncServer(SocketOps):
     def __init__(self, type: str):
         super().__init__()
         self.type = type
-        self.socket_path = tempfile.mktemp(prefix=f"ai2bmd-{type}-")
-        if os.path.exists(self.socket_path):
-            raise OSError("socket path exists")
+        self.socket_dir = tempfile.mkdtemp(prefix=f"ai2bmd-{type}-")
+        self.socket_path = os.path.join(self.socket_dir, "socket")
         self.server_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self.server_socket.bind(self.socket_path)
         self.server_socket.listen()
