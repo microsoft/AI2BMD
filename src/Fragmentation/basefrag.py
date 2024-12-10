@@ -73,6 +73,15 @@ class DipeptideFragment(BaseFragment):
         num_dipeptides = num_residue - 2
         num_acenmes = num_residue - 3
 
+        if num_dipeptides < 2:
+            raise NotImplementedError(
+                "Attempting to fragment protein with 3 or fewer residues "
+                "(including ACE/NME caps). Please check that the input file "
+                "is prepared according to the instructions, or pass "
+                "'--mode visnet' to run simulations on the input as an entire "
+                "unit, i.e., without fragmentation."
+            )
+
         dipeptides: list[list[int]] = [[] for _ in range(num_dipeptides)]
         sidechains: list[list[int]] = [[] for _ in range(num_dipeptides)]
         acenmes: list[list[int]] = [[] for _ in range(num_acenmes)]
