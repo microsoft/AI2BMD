@@ -140,7 +140,7 @@ class DeviceStrategy:
 
 
     @classmethod
-    def initialize(cls, dev_strategy: str, work_strategy: str, preprocess_method: str, gpu_count: int, chunk_size: int):
+    def initialize(cls, dev_strategy: str, work_strategy: str, mm_method: str, gpu_count: int, chunk_size: int):
         cls._gpu_count = gpu_count
         cls._dev_strategy = dev_strategy
         cls._work_strategy = work_strategy
@@ -160,7 +160,7 @@ class DeviceStrategy:
         default = "cpu" if gpu_count == 0 else "cuda:0"
         optimiser = "cpu"
         
-        if preprocess_method == "tinker-GPU" and gpu_count > 0:
+        if mm_method == "tinker-GPU" and gpu_count > 0:
             preprocess = f"cuda:{last_gpu}"
         else:
             preprocess = "cpu"
@@ -216,11 +216,11 @@ class DeviceStrategy:
             # run bonded/non-bonded calculations concurrently
             cls._fragment_strategy = True
 
-        if preprocess_method == "tinker-GPU":
+        if mm_method == "tinker-GPU":
             if len(solvent) == 0:
                 logging.error("tinker-GPU is specified, but there's no GPU. Reverting back to CPU.")
                 solvent = ["cpu"]
-                preprocess_method = "tinker"
+                mm_method = "tinker"
         else:
             solvent = ["cpu"]
 
@@ -262,4 +262,4 @@ class DeviceStrategy:
             torch_threads = max(1, total_threads // total_models)
             torch.set_num_threads(torch_threads)
 
-        return { 'preprocess-method': preprocess_method }
+        return { 'mm-method': mm_method }

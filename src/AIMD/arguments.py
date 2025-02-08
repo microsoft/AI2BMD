@@ -218,7 +218,7 @@ def init(argv=None):
         torch.cuda.device_count(),
         _args.chunk_size,
     )
-    _args.mm_method = strategy_feedback['preprocess-method']
+    _args.mm_method = strategy_feedback['mm-method']
 
     return _args
 
