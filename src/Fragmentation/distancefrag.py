@@ -342,7 +342,7 @@ class DistanceFragment(DipeptideFragment):
         length = torch.tensor(length, dtype=torch.int, device=device)
 
         offset = torch.zeros((sizes[-1],), dtype=torch.int, device=device)
-        offset = torch.cumsum(offset.scatter(0, sizes[:-1], length), dim=0)
+        offset = torch.cumsum(offset.put_(sizes[:-1], length[:-1], accumulate=True), dim=0)
 
         select_index = numpy_list_to_torch(select_index, device)
         origin_index = numpy_list_to_torch(origin_index, device)
