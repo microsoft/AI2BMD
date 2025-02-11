@@ -54,7 +54,10 @@ def parse_args(argv):
         "--ckpt-type",
         type=str,
         default="2ef43f29ec78fa5fef0b3de832bfada9",
-        choices=["2ef43f29ec78fa5fef0b3de832bfada9"],
+        choices=[
+            "2ef43f29ec78fa5fef0b3de832bfada9",
+            "de11d1421ccda37ffab07d7403c8f5bb",
+        ],
         help="Checkpoint type, which is the md5sum of the model checkpoint file",
     )
     parser.add_argument(
