@@ -242,7 +242,7 @@ chmod +x ai2bmd
 The format of the simulation trajectory is `.traj` of ASE format. To convert it to `.dcd` format for visualization, you can install MDAnalysis first and take `src/utils/traj2dcd.py` as reference with the following commands:
 
 ```shell
-python traj2dcd.py --input xxx.pdb --output xxx.dcd --pdb xxx.pdb --num-atoms nnn --stride nnn
+python traj2dcd.py --input xxx.traj --output xxx.dcd --pdb xxx.pdb --num-atoms nnn --stride nnn
 
 # arguments
 # --input         The name of the input trajectory file
